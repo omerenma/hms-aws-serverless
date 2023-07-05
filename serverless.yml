@@ -1,0 +1,37 @@
+
+
+service: hmsservice
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 2048
+  stage: dev
+  timeout: 15
+  region: us-east-1
+
+functions:
+  app:
+    handler: build/app.handler
+    events:
+      - http: ANY /
+      - http: ANY /{proxy+}
+    environment:
+      server : 5000;
+      BCRYPT_PASSWORD : ncdjndjnsadjnNCJCNJNCJINC8282ijsoijoSIIijijiuqwjo
+      SALT_ROUNDS : 10
+      TOKEN_SECRET : 'skdmsamdisadmcansdc0nndcjndcajsden'
+      PEEPER : mmmkfmldk9448jvkmfdso
+      EMAIL_SMTP_USER : godwin2341@gmail.com
+      EMAIL_SMTP_PASSWORD : eceouwluvvarxyoo
+
+      RDS_HOSTNAME : hmsdb.cs6txkhiualn.us-east-1.rds.amazonaws.com
+      RDS_PORT : 5432
+      RDS_DB_NAME : hmsdatabase
+      RDS_USERNAME : postgres
+      RDS_PASSWORD : Omerenma1
+      DIALECT : postgres
+plugins:
+  - serverless-plugin-common-excludes
+

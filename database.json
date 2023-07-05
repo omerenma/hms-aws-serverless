@@ -1,0 +1,16 @@
+{
+    "dev": {
+      "driver": "pg",
+      "host": "127.0.0.1",
+      "database": "hmsdatabase",
+      "user": "postgres",
+      "password": "omerenma1"
+    },
+    "test": {
+      "driver": "pg",
+      "host": "127.0.0.1",
+      "database": "hmsdatabase_test",
+      "user": "postgres",
+      "password": "omerenma1"
+    }
+  }

@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.bookAppointment = exports.doctorRoute = exports.admission = exports.patientRoute = exports.diagnosisRoute = exports.appointmentRoute = exports.userRoute = void 0;
+const users_1 = require("./users");
+exports.userRoute = users_1.default;
+const appointment_1 = require("./appointment");
+exports.appointmentRoute = appointment_1.default;
+const diagnosis_1 = require("./diagnosis");
+exports.diagnosisRoute = diagnosis_1.default;
+const patients_1 = require("./patients");
+exports.patientRoute = patients_1.default;
+const admission_1 = require("./admission");
+exports.admission = admission_1.default;
+const doctors_1 = require("./doctors");
+exports.doctorRoute = doctors_1.default;
+const bookAppointment_1 = require("./bookAppointment");
+exports.bookAppointment = bookAppointment_1.default;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJpbmRleC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSxtQ0FBK0I7QUFVdkIsb0JBVkQsZUFBUyxDQVVDO0FBVGpCLCtDQUE0QztBQVN6QiwyQkFUWixxQkFBZ0IsQ0FTWTtBQVJuQywyQ0FBd0M7QUFRSCx5QkFSOUIsbUJBQWMsQ0FROEI7QUFQbkQseUNBQXFDO0FBT2dCLHVCQVA5QyxrQkFBWSxDQU84QztBQU5qRSwyQ0FBbUM7QUFNZ0Msb0JBTjVELG1CQUFTLENBTTREO0FBTDVFLHVDQUFtQztBQUsyQyxzQkFMdkUsaUJBQVcsQ0FLdUU7QUFKekYsdURBQStDO0FBSTRDLDBCQUpwRix5QkFBZSxDQUlvRiIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB1c2VyUm91dGUgZnJvbSAnLi91c2VycydcclxuaW1wb3J0IGFwcG9pbnRtZW50Um91dGUgZnJvbSAnLi9hcHBvaW50bWVudCdcclxuaW1wb3J0IGRpYWdub3Npc1JvdXRlIGZyb20gJy4vZGlhZ25vc2lzJ1xyXG5pbXBvcnQgcGF0aWVudFJvdXRlIGZyb20gJy4vcGF0aWVudHMnXHJcbmltcG9ydCBhZG1pc3Npb24gZnJvbSAnLi9hZG1pc3Npb24nXHJcbmltcG9ydCBkb2N0b3JSb3V0ZSBmcm9tICcuL2RvY3RvcnMnXHJcbmltcG9ydCBib29rQXBwb2ludG1lbnQgZnJvbSAnLi9ib29rQXBwb2ludG1lbnQnXHJcblxyXG5cclxuXHJcbmV4cG9ydCB7dXNlclJvdXRlLCBhcHBvaW50bWVudFJvdXRlLCBkaWFnbm9zaXNSb3V0ZSwgcGF0aWVudFJvdXRlLCBhZG1pc3Npb24sIGRvY3RvclJvdXRlLCBib29rQXBwb2ludG1lbnR9Il19
