@@ -13,7 +13,8 @@ export const createAppointment = async (req:Request, res:Response) => {
         const data = { patient_id, doctor_id, appointment_date};
         const query = await appointment.addAppointment(data);
         return res.status(201).json({ message: `An appointment has been scheduled with ${data.doctor_id} and ${data.patient_id} `, data: query });
-      } catch (error) {
+      } catch (error:any) {
+        console.log('Appointment Error', error)
         return res.status(500).json({ message: "Something went wrong...", error });
       }
 }
@@ -29,3 +30,14 @@ export const getAppointment = async (_req:Request, res:Response) => {
 
 }
 
+export const getDoctorAppointment = async (req:Request, res:Response) => {
+  const appointment = new AppointmentModel()
+  try {
+    const id = req.params.id
+    const response = await appointment.getAppointmentByDoctorId(id)
+    return res.status(200).json(response)
+  } catch (error) {
+    return res.status(500).json({message:"Something went wrong"})
+  }
+
+}

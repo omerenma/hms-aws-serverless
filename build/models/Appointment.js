@@ -16,8 +16,8 @@ class AppointmentModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db_connection = yield database_1.client.connect();
-                const sql = 'INSERT INTO appointments (patient_name, patient_email, doctor_email, date) VALUES ($1, $2, $3, $4) RETURNING * ';
-                const result = yield db_connection.query(sql, [user.patient_name, user.doctor_email, user.date, user.patient_email,]);
+                const sql = 'INSERT INTO appointments (patient_id, doctor_id, appointment_date) VALUES ($1, $2, $3) RETURNING * ';
+                const result = yield db_connection.query(sql, [user.patient_id, user.doctor_id, user.appointment_date]);
                 const response = result;
                 return response.rows[0];
             }
@@ -30,13 +30,26 @@ class AppointmentModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db_connection = yield database_1.client.connect();
-                const sql = "SELECT * FROM appointments";
+                const sql = "SELECT * FROM appointments join patients on patients_id = patient_id join doctors on id_doctor = doctor_id";
                 const result = yield db_connection.query(sql);
                 const response = result;
                 return response.rows;
             }
             catch (error) {
                 return error;
+            }
+        });
+    }
+    getAppointmentByDoctorId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const db_connection = yield database_1.client.connect();
+                const sql = "SELECT * FROM appointments JOIN doctors ON id_doctor = doctor_id WHERE id_doctor = ($1)";
+                const result = yield db_connection.query(sql, [id]);
+                return result.rows;
+            }
+            catch (error) {
+                return error.message;
             }
         });
     }

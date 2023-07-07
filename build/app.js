@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
-database_1.client.connect((err) => {
+database_1.client_dev.connect((err) => {
     if (err) {
         console.log("Connection error: ", err.message);
         return;
@@ -34,5 +34,8 @@ app.all("*", (req, res) => {
 });
 app.use((err, req, res, next) => {
     res.status(err.status || 500).send();
+});
+app.listen(5000, () => {
+    console.table("Server running on port 5000");
 });
 exports.handler = serverless(app);

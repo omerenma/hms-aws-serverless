@@ -20,7 +20,7 @@ const app =  express();
 app.use(express.json());
 app.use(cors());
 
-client.connect((err) => {
+client_dev.connect((err) => {
   if (err) {
     console.log("Connection error: ", err.message);
     return;
@@ -48,5 +48,7 @@ app.all("*", (req: express.Request, res: express.Response) => {
 app.use((err:any, req: express.Request, res: express.Response, next:express.NextFunction) => {
   res.status(err.status || 500).send()
 })
-
+app.listen(5000, () => {
+  console.table("Server running on port 5000")
+})
 export const handler = serverless(app)
