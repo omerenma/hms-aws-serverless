@@ -1,4 +1,4 @@
-import { client } from "../database/database";
+import { client , client_dev} from "../database/database";
 import { Diagnosis, UpdateDiagnosis } from "../interface/Diagnosis";
 
 export class DiagnosismentModel {
@@ -28,7 +28,7 @@ export class DiagnosismentModel {
 
   async updateDiagnosis(user:UpdateDiagnosis): Promise<UpdateDiagnosis> {
     try {
-      const db_connection =await client.connect();
+      const db_connection =await client_dev.connect();
 
       const query = `UPDATE diagnosis SET (bill,
         date,
@@ -64,7 +64,7 @@ export class DiagnosismentModel {
 
     async getPatientDiagnosis(email:string):Promise<Diagnosis> {
         try {
-            const db_connection = client.connect()
+            const db_connection = client_dev.connect()
             const sql = `SELECT * FROM diagnosis WHERE email = ${email}`
             const query = await (await db_connection).query(sql, [email])
             if(!query.rows){
@@ -78,7 +78,7 @@ export class DiagnosismentModel {
 
     async getAllDiagnosis():Promise<Diagnosis[]> {
       try {
-        const db_connection = await client.connect()
+        const db_connection = await client_dev.connect()
         const sql = `SELECT * FROM diagnosis`
         const query = await db_connection.query(sql)
         return query.rows

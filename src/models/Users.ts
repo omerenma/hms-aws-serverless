@@ -13,8 +13,8 @@ interface User{
 export class UsersModel {
     async addUser(user:Users): Promise<Users> {
         try {
-            const db_connection = await client.connect()
-            const checkEmail = `SELECT email FROM users WHERE email=($1)`
+            const db_connection = await client_dev.connect()
+            const checkEmail = "SELECT * FROM users WHERE email=($1)"
             const query_email = await db_connection.query(checkEmail, [user.email])
             if( query_email.rows.length > 0){
                 throw new Error(`User with email: ${user.email},  already exist.`)
@@ -33,7 +33,7 @@ export class UsersModel {
     async login (email:string, password:string): Promise<LoginData>{
         try {
             let isMatch;
-            const db_connection = await client.connect()
+            const db_connection = await client_dev.connect()
             const check_email = 'select * from users where email = ($1)'
             const query_email = await  db_connection.query(check_email, [email])
             let query_result = query_email.rows
@@ -52,7 +52,7 @@ export class UsersModel {
     // Get all users
     async getUsers (): Promise <User[]> {
         try {
-         const db_connection =await client.connect()
+         const db_connection =await client_dev.connect()
          const sql = `SELECT * FROM users`
          const query = await  db_connection.query(sql)
          return query.rows
@@ -65,7 +65,7 @@ export class UsersModel {
      async getUserById (id:number): Promise <Users[]> {
         console.log(id)
         try {
-         const db_connection = client.connect()
+         const db_connection = client_dev.connect()
          const sql = `SELECT * FROM users WHERE id = ($1)`
          const query = await (await db_connection).query(sql, [id])
          return query.rows
@@ -78,7 +78,7 @@ export class UsersModel {
 
     async deleteUser (id:number): Promise<Users> {
         try {
-            const db_connection = client.connect()
+            const db_connection = client_dev.connect()
             const query_id = `DELETE  FROM users WHERE id =($1)`
             const sql = await (await db_connection).query(query_id, [id])
             return sql.rows[0]
@@ -92,7 +92,7 @@ export class UsersModel {
    
      async editUser (id:string, name?:string, email?:string, role?:string ): Promise<[]> {
         try {
-            const db_connection = await client.connect()
+            const db_connection = await client_dev.connect()
             // const query_id = `select * from users where id = ${id}`
             // const id_result = await db_connection.query(query_id)
             // if(id_result.rowCount != 0){
@@ -112,7 +112,7 @@ export class UsersModel {
        // Get Doctors
        async getDoctors (): Promise <Users[]> {
         try {
-         const db_connection = client.connect()
+         const db_connection = client_dev.connect()
          const sql = `SELECT * FROM users WHERE role = 'doctor' `
          const query = await (await db_connection).query(sql)
          return query.rows

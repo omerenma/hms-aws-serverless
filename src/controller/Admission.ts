@@ -6,12 +6,12 @@ import { json } from "body-parser";
 export const createAdmission = async (req: Request, res: Response) => {
   const admission = new AdmissionModel();
   try {
-    const { patients_id, admission_date, discharged_date } = req.body;
+    const { patients_id, admission_date, admission_room_number, ailment } = req.body;
     const { error, value } = admissionSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
-    const data = { patients_id, admission_date, discharged_date };
+    const data = { patients_id, admission_date,admission_room_number, ailment };
     const query = await admission.createAdmission(data);
    return res
       .status(201)

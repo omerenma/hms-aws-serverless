@@ -16,8 +16,8 @@ class UsersModel {
     addUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
-                const checkEmail = `SELECT email FROM users WHERE email=($1)`;
+                const db_connection = yield database_1.client_dev.connect();
+                const checkEmail = "SELECT * FROM users WHERE email=($1)";
                 const query_email = yield db_connection.query(checkEmail, [user.email]);
                 if (query_email.rows.length > 0) {
                     throw new Error(`User with email: ${user.email},  already exist.`);
@@ -39,7 +39,7 @@ class UsersModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let isMatch;
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 const check_email = 'select * from users where email = ($1)';
                 const query_email = yield db_connection.query(check_email, [email]);
                 let query_result = query_email.rows;
@@ -60,7 +60,7 @@ class UsersModel {
     getUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 const sql = `SELECT * FROM users`;
                 const query = yield db_connection.query(sql);
                 return query.rows;
@@ -75,7 +75,7 @@ class UsersModel {
         return __awaiter(this, void 0, void 0, function* () {
             console.log(id);
             try {
-                const db_connection = database_1.client.connect();
+                const db_connection = database_1.client_dev.connect();
                 const sql = `SELECT * FROM users WHERE id = ($1)`;
                 const query = yield (yield db_connection).query(sql, [id]);
                 return query.rows;
@@ -89,7 +89,7 @@ class UsersModel {
     deleteUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = database_1.client.connect();
+                const db_connection = database_1.client_dev.connect();
                 const query_id = `DELETE  FROM users WHERE id =($1)`;
                 const sql = yield (yield db_connection).query(query_id, [id]);
                 return sql.rows[0];
@@ -103,7 +103,7 @@ class UsersModel {
     editUser(id, name, email, role) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 // const query_id = `select * from users where id = ${id}`
                 // const id_result = await db_connection.query(query_id)
                 // if(id_result.rowCount != 0){
@@ -125,7 +125,7 @@ class UsersModel {
     getDoctors() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = database_1.client.connect();
+                const db_connection = database_1.client_dev.connect();
                 const sql = `SELECT * FROM users WHERE role = 'doctor' `;
                 const query = yield (yield db_connection).query(sql);
                 return query.rows;

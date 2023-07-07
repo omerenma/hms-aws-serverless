@@ -15,7 +15,7 @@ class DoctorModel {
     addDoctor(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 // Query Users table
                 const user_email = `select * from users where email = ($1)`;
                 const users = yield db_connection.query(user_email, [data.email]);
@@ -53,7 +53,7 @@ class DoctorModel {
     getdoctors() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = database_1.client.connect();
+                const db_connection = database_1.client_dev.connect();
                 const sql = `SELECT * FROM doctors`;
                 const query = yield (yield db_connection).query(sql);
                 return query.rows;
@@ -67,7 +67,7 @@ class DoctorModel {
     getUserById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = database_1.client.connect();
+                const db_connection = database_1.client_dev.connect();
                 const sql = `SELECT * FROM doctors WHERE id = ($1)`;
                 const query = yield (yield db_connection).query(sql, [id]);
                 return query.rows;
@@ -81,7 +81,7 @@ class DoctorModel {
     deleteDoctor(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = database_1.client.connect();
+                const db_connection = database_1.client_dev.connect();
                 const query_id = `DELETE  FROM doctors WHERE id =($1)`;
                 const sql = yield (yield db_connection).query(query_id, [id]);
                 return sql.rows[0];
@@ -95,7 +95,7 @@ class DoctorModel {
     editDoctor(id, name, email, sex, dob, phone_no, specialty) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 const query = `UPDATE doctors SET name = $1, email = $2, sex = $3, dob = $4, phone_no = $5, specialty = $6 WHERE id = ${id}`;
                 const result = yield db_connection.query(query, [name, email, sex, dob, phone_no, specialty]);
                 if (result.rowCount !== 0) {

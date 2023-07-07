@@ -15,7 +15,7 @@ class BookAppointmentModel {
     booAppointment(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 const sql = 'INSERT INTO book_appointments (patient_id, doctor_id, appointment_date) VALUES ($1, $2, $3) RETURNING * ';
                 const result = yield db_connection.query(sql, [user.patient_id, user.doctor_id, user.appointment_date]);
                 const response = result;
@@ -29,7 +29,7 @@ class BookAppointmentModel {
     getAppointment() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 const sql = "SELECT * FROM book_appointments JOIN patients ON patients_id=patient_id JOIN doctors ON id_doctor=doctor_id";
                 const result = yield db_connection.query(sql);
                 const response = result;
@@ -43,7 +43,7 @@ class BookAppointmentModel {
     getAppointmentByDoctorId(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 const sql = "SELECT * FROM book_appointments JOIN patients ON patients_id=patient_id JOIN doctors ON id_doctor=doctor_id WHERE id_doctor = ($1)";
                 const result = yield db_connection.query(sql, [id]);
                 return result.rows;

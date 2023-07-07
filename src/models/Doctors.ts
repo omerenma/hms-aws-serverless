@@ -1,4 +1,4 @@
-import {client} from '../database/database'
+import {client, client_dev} from '../database/database'
 import { Users, Verify, Login, LoginData } from '../utils/types'
 interface Doctors{
     name:string;
@@ -13,7 +13,7 @@ export class DoctorModel {
     async addDoctor(data:Doctors): Promise<{message:string}> 
     {
         try {
-            const db_connection = await client.connect()
+            const db_connection = await client_dev.connect()
             // Query Users table
             const user_email = `select * from users where email = ($1)`
            const users =  await db_connection.query(user_email,[data.email])
@@ -53,7 +53,7 @@ export class DoctorModel {
     // Get all users
     async getdoctors (): Promise <Doctors[]> {
         try {
-         const db_connection = client.connect()
+         const db_connection = client_dev.connect()
          const sql = `SELECT * FROM doctors`
          const query = await (await db_connection).query(sql)
          return query.rows
@@ -65,7 +65,7 @@ export class DoctorModel {
      // Get single Doctor
      async getUserById (id:number): Promise <Users[]> {
         try {
-         const db_connection = client.connect()
+         const db_connection = client_dev.connect()
          const sql = `SELECT * FROM doctors WHERE id = ($1)`
          const query = await (await db_connection).query(sql, [id])
          return query.rows
@@ -79,7 +79,7 @@ export class DoctorModel {
 
     async deleteDoctor (id:string): Promise<Doctors> {
         try {
-            const db_connection = client.connect()
+            const db_connection = client_dev.connect()
             const query_id = `DELETE  FROM doctors WHERE id =($1)`
             const sql = await (await db_connection).query(query_id, [id])
             return sql.rows[0]
@@ -93,7 +93,7 @@ export class DoctorModel {
    
      async editDoctor (id:string, name?:string, email?:string, sex?:string, dob?:string, phone_no?:string, specialty?:string ): Promise<[]> {
         try {
-            const db_connection = await client.connect()
+            const db_connection = await client_dev.connect()
             const query = `UPDATE doctors SET name = $1, email = $2, sex = $3, dob = $4, phone_no = $5, specialty = $6 WHERE id = ${id}`
             const result = await db_connection.query(query, [name, email, sex, dob, phone_no, specialty])
             if(result.rowCount !== 0){

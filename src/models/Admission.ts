@@ -1,12 +1,12 @@
-import {client} from '../database/database'
+import {client, client_dev} from '../database/database'
 import { Admission, GetAdmission } from '../interface/Admission';
 
 export class AdmissionModel {
-    async createAdmission(user:Admission): Promise<[]> {
+    async createAdmission(data:Admission): Promise<[]> {
         try {
-                const db_connection = await client.connect()
-                const sql = 'INSERT INTO admissions (patients_id , admission_date, discharged_date ) VALUES ($1, $2, $3) RETURNING * ';
-                const result = await  db_connection.query(sql, [  user.patients_id, user.admission_date, user.discharged_date])
+                const db_connection = await client_dev.connect()
+                const sql = 'INSERT INTO admissions (patients_id , admission_date, admission_room_number, ailment ) VALUES ($1, $2, $3, $4) RETURNING * ';
+                const result = await  db_connection.query(sql, [  data.patients_id, data.admission_date, data.admission_room_number, data.ailment])
                 const response =  result
                  return response.rows[0]
             
@@ -18,8 +18,8 @@ export class AdmissionModel {
 
     async getAdmission ():Promise<GetAdmission[]> {
         try {
-            const db_connection = await client.connect()
-            const sql = "select * from admissions join patients on patients.patients_id = admissions.patients_id";
+            const db_connection = await client_dev.connect()
+            const sql = "select * from admissions join patients on patients.id = admissions.patients_id";
             const result = await db_connection.query(sql)
             const response = result
             return response.rows

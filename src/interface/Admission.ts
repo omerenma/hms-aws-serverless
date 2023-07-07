@@ -2,7 +2,8 @@ export interface Admission {
     id?:number;
     patients_id?:string;
     admission_date:string;
-    discharged_date:string;
+    admission_room_number:string;
+    ailment:string
 }
 
 export interface GetAdmission {

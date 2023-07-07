@@ -15,7 +15,7 @@ class PatientModel {
     addPatient(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 const sql = "INSERT INTO patients (name, sex, dob,residential_address , email, phone_no, next_of_kin_name, next_of_kin_phone_no) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * ";
                 const result = yield (db_connection).query(sql, [
                     user.name,
@@ -39,7 +39,7 @@ class PatientModel {
     deletePatient(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = database_1.client.connect();
+                const db_connection = database_1.client_dev.connect();
                 const query_id = `SELECT id from patients WHERE id =($1)`;
                 const sql = yield (yield db_connection).query(query_id, [id]);
                 if (sql.rows.length > 0) {
@@ -56,7 +56,7 @@ class PatientModel {
     editPatient(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = database_1.client.connect();
+                const db_connection = database_1.client_dev.connect();
                 const query = `UPDATE patients SET (status) = ($1)  WHERE id = ${user.id}`;
                 const sql = yield (yield db_connection).query(query, [user.id, user.status]);
                 if (sql.rows.length > 0) {
@@ -73,7 +73,7 @@ class PatientModel {
     getPatients() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = database_1.client.connect();
+                const db_connection = database_1.client_dev.connect();
                 const sql = `SELECT * FROM patients`;
                 const query = yield (yield db_connection).query(sql);
                 return query.rows;
@@ -86,7 +86,7 @@ class PatientModel {
     getPatientsById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = database_1.client.connect();
+                const db_connection = database_1.client_dev.connect();
                 const sql = `SELECT * FROM patients WHERE id = $($1)`;
                 const query = yield (yield db_connection).query(sql, [id]);
                 return query.rows[0];

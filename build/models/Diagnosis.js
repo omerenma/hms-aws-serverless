@@ -39,7 +39,7 @@ class DiagnosismentModel {
     updateDiagnosis(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 const query = `UPDATE diagnosis SET (bill,
         date,
         description,
@@ -75,7 +75,7 @@ class DiagnosismentModel {
     getPatientDiagnosis(email) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = database_1.client.connect();
+                const db_connection = database_1.client_dev.connect();
                 const sql = `SELECT * FROM diagnosis WHERE email = ${email}`;
                 const query = yield (yield db_connection).query(sql, [email]);
                 if (!query.rows) {
@@ -91,7 +91,7 @@ class DiagnosismentModel {
     getAllDiagnosis() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 const sql = `SELECT * FROM diagnosis`;
                 const query = yield db_connection.query(sql);
                 return query.rows;

@@ -15,9 +15,9 @@ class AppointmentModel {
     addAppointment(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
-                const sql = 'INSERT INTO appointments (patient_id, doctor_id, appointment_date) VALUES ($1, $2, $3) RETURNING * ';
-                const result = yield db_connection.query(sql, [user.patient_id, user.doctor_id, user.appointment_date]);
+                const db_connection = yield database_1.client_dev.connect();
+                const sql = 'INSERT INTO appointments (patients_id, doctor_id, appointment_date) VALUES ($1, $2, $3) RETURNING * ';
+                const result = yield db_connection.query(sql, [user.patients_id, user.doctor_id, user.appointment_date]);
                 const response = result;
                 return response.rows[0];
             }
@@ -29,8 +29,8 @@ class AppointmentModel {
     getAppointment() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
-                const sql = "SELECT * FROM appointments join patients on patients_id = patient_id join doctors on id_doctor = doctor_id";
+                const db_connection = yield database_1.client_dev.connect();
+                const sql = "select * from appointments join patients on patients.id::varchar = appointments.patients_id join doctors on doctors.id_doctor::varchar=appointments.doctor_id";
                 const result = yield db_connection.query(sql);
                 const response = result;
                 return response.rows;
@@ -43,7 +43,7 @@ class AppointmentModel {
     getAppointmentByDoctorId(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
+                const db_connection = yield database_1.client_dev.connect();
                 const sql = "SELECT * FROM appointments JOIN doctors ON id_doctor = doctor_id WHERE id_doctor = ($1)";
                 const result = yield db_connection.query(sql, [id]);
                 return result.rows;

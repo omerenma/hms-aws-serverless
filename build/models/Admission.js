@@ -12,12 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdmissionModel = void 0;
 const database_1 = require("../database/database");
 class AdmissionModel {
-    createAdmission(user) {
+    createAdmission(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
-                const sql = 'INSERT INTO admissions (patients_id , admission_date, discharged_date ) VALUES ($1, $2, $3) RETURNING * ';
-                const result = yield db_connection.query(sql, [user.patients_id, user.admission_date, user.discharged_date]);
+                const db_connection = yield database_1.client_dev.connect();
+                const sql = 'INSERT INTO admissions (patients_id , admission_date, admission_room_number, ailment ) VALUES ($1, $2, $3, $4) RETURNING * ';
+                const result = yield db_connection.query(sql, [data.patients_id, data.admission_date, data.admission_room_number, data.ailment]);
                 const response = result;
                 return response.rows[0];
             }
@@ -29,8 +29,8 @@ class AdmissionModel {
     getAdmission() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
-                const sql = "select * from admissions join patients on patients.patients_id = admissions.patients_id";
+                const db_connection = yield database_1.client_dev.connect();
+                const sql = "select * from admissions join patients on patients.id = admissions.patients_id";
                 const result = yield db_connection.query(sql);
                 const response = result;
                 return response.rows;

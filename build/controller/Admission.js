@@ -15,12 +15,12 @@ const admissionValidation_1 = require("../helpers/admissionValidation");
 const createAdmission = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const admission = new Admission_1.AdmissionModel();
     try {
-        const { patients_id, admission_date, discharged_date } = req.body;
+        const { patients_id, admission_date, admission_room_number, ailment } = req.body;
         const { error, value } = admissionValidation_1.admissionSchema.validate(req.body);
         if (error) {
             return res.status(400).json({ message: error.details[0].message });
         }
-        const data = { patients_id, admission_date, discharged_date };
+        const data = { patients_id, admission_date, admission_room_number, ailment };
         const query = yield admission.createAdmission(data);
         return res
             .status(201)

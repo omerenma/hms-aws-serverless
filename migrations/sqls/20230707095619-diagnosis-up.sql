@@ -1,3 +1,4 @@
+
    CREATE TABLE diagnosis (
     id serial primary key,
     treatment_name VARCHAR(500) NOT NULL,
