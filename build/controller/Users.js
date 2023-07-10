@@ -43,7 +43,7 @@ const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email, password } = req.body;
         const result = yield user.login(email, password);
         if (result) {
-            let payload = jwt.sign({ payload: result }, process.env.TOKEN_SECRET, { expiresIn: "30 minutes" });
+            let payload = jwt.sign({ payload: result }, process.env.TOKEN_SECRET, { expiresIn: "10 minutes" });
             return res.status(200).json({
                 message: "Login successful",
                 token: payload,

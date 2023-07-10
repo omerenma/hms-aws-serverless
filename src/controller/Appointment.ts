@@ -24,8 +24,8 @@ export const getAppointment = async (_req:Request, res:Response) => {
   try {
     const response = await appointment.getAppointment()
     return res.status(200).json(response)
-  } catch (error) {
-    return res.status(500).json({message:"Something went wrong"})
+  } catch (error:any) {
+    return error
   }
 
 }
@@ -37,7 +37,7 @@ export const getDoctorAppointment = async (req:Request, res:Response) => {
     const response = await appointment.getAppointmentByDoctorId(id)
     return res.status(200).json(response)
   } catch (error) {
-    return res.status(500).json({message:"Something went wrong"})
+    return res.status(500).json({message:"Something went wrong", error})
   }
 
 }

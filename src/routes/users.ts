@@ -18,6 +18,6 @@ router.get("/getusers", verifyToken, getUsers);
 router.get("/getuser/:id", verifyToken, getUserById);
 router.get("/getdoctors", verifyToken, getDoctors);
 router.delete("/user/:id", verifyToken, deleteUser);
-router.put("/user", editUser);
+router.put("/user", verifyToken, editUser);
 
 export default router;

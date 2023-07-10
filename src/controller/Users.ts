@@ -37,7 +37,7 @@ export const signin = async (req: Request, res: Response) => {
       let payload = jwt.sign(
         { payload: result },
         process.env.TOKEN_SECRET as string,
-        { expiresIn: "30 minutes" }
+        { expiresIn: "10 minutes" }
       );
       return res.status(200).json({
         message: "Login successful",

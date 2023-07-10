@@ -17,9 +17,12 @@ const verifyToken = (req, res, next) => {
             next();
             return verify;
         }
+        else {
+            return res.status(401).json({ message: "You are not authorised to view this resource, please login" });
+        }
     }
     catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(401).json({ message: error.message });
     }
 };
 exports.verifyToken = verifyToken;

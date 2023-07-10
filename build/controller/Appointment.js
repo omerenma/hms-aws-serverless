@@ -37,7 +37,7 @@ const getAppointment = (_req, res) => __awaiter(void 0, void 0, void 0, function
         return res.status(200).json(response);
     }
     catch (error) {
-        return res.status(500).json({ message: "Something went wrong" });
+        return error;
     }
 });
 exports.getAppointment = getAppointment;
@@ -49,7 +49,7 @@ const getDoctorAppointment = (req, res) => __awaiter(void 0, void 0, void 0, fun
         return res.status(200).json(response);
     }
     catch (error) {
-        return res.status(500).json({ message: "Something went wrong" });
+        return res.status(500).json({ message: "Something went wrong", error });
     }
 });
 exports.getDoctorAppointment = getDoctorAppointment;

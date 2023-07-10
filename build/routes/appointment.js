@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const Appointment_1 = require("../controller/Appointment");
+const verifyTokens_1 = require("../middlewares/verifyTokens");
 const router = (0, express_1.Router)();
-router.post('/add', Appointment_1.createAppointment);
-router.get('/get', Appointment_1.getAppointment);
+router.post('/add', verifyTokens_1.verifyToken, Appointment_1.createAppointment);
+router.get('/get', verifyTokens_1.verifyToken, Appointment_1.getAppointment);
+router.get('/get/:id', verifyTokens_1.verifyToken, Appointment_1.getDoctorAppointment);
 exports.default = router;

@@ -10,5 +10,5 @@ router.get("/getusers", verifyTokens_1.verifyToken, Users_1.getUsers);
 router.get("/getuser/:id", verifyTokens_1.verifyToken, Users_1.getUserById);
 router.get("/getdoctors", verifyTokens_1.verifyToken, Users_1.getDoctors);
 router.delete("/user/:id", verifyTokens_1.verifyToken, Users_1.deleteUser);
-router.put("/user", Users_1.editUser);
+router.put("/user", verifyTokens_1.verifyToken, Users_1.editUser);
 exports.default = router;
