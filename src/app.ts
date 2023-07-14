@@ -20,7 +20,7 @@ const app =  express();
 
 app.use(express.json());
 app.use(cors({
-  origin:['https://hms-next.vercel.app']
+  origin:'https://hms-next.vercel.app'
 }));
 
 client_dev.connect((err) => {

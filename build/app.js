@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin: ['https://hms-next.vercel.app']
+    origin: 'https://hms-next.vercel.app'
 }));
 database_1.client_dev.connect((err) => {
     if (err) {
