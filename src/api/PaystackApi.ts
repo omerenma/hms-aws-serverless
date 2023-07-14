@@ -69,7 +69,13 @@ class PaystackApi extends PaystackBaseApi {
 
 
 
-    verifyPayment = (paymentReference: string) => this.get(`/transaction/verify/${paymentReference}`)
+    verifyPayment = async (paymentReference: string) => {
+
+       const response = await this.get(`/transaction/verify/${paymentReference}`, 
+       this.requestInt
+       )
+       return response
+    } 
 
 }
 const paystackApi = new PaystackApi()
