@@ -1,7 +1,6 @@
 import { HttpStatusCode } from "axios";
 import { BodyInit, RequestInit } from "node-fetch";
-import fetch from 'node-fetch'
-
+import fetch from "node-fetch";
 
 class PaystackBaseApi {
   baseUri: string;
@@ -21,13 +20,13 @@ class PaystackBaseApi {
         uriObj.search = new URLSearchParams(args).toString();
       }
       const requestOptions = { ...requestInit, body };
-      const response = await  fetch(uriObj.toString(), requestOptions);
+      const response = await fetch(uriObj.toString(), requestOptions);
       if (!response.ok) {
         const errorMessage = await response.text();
         throw new Error(errorMessage);
       }
-      if (response.status === HttpStatusCode.NoContent) return
-      return response.json()
+      if (response.status === HttpStatusCode.NoContent) return;
+      return response.json();
     } catch (error: any) {
       console.log(error.message, "errorsss");
       throw new Error(error.message);
@@ -48,8 +47,11 @@ class PaystackBaseApi {
     args?: Record<string, any>,
     requestInit?: RequestInit
   ) => {
-    const bodyString = body ? JSON.stringify(body) : undefined
-   return this.fetch(uri, bodyString, args, { ...requestInit, method: "POST" });
+    const bodyString = body ? JSON.stringify(body) : undefined;
+    return this.fetch(uri, bodyString, args, {
+      ...requestInit,
+      method: "POST",
+    });
   };
 }
 

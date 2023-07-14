@@ -27,7 +27,10 @@ class PaystackApi extends Paystack_1.default {
             const response = yield this.post(`/transaction/initialize`, paymentDetails, undefined, this.requestInt);
             return response.data;
         });
-        this.verifyPayment = (paymentReference) => this.get(`/transaction/verify/${paymentReference}`);
+        this.verifyPayment = (paymentReference) => __awaiter(this, void 0, void 0, function* () {
+            const response = yield this.get(`/transaction/verify/${paymentReference}`, this.requestInt);
+            return response;
+        });
     }
 }
 const paystackApi = new PaystackApi();
