@@ -22,6 +22,7 @@ database_1.client_dev.connect((err) => {
 app.get("/hello", (req, res) => {
     res.send("Hello Elastic Bean Stalk");
 });
+app.use('/subscription', index_1.paystack);
 app.use("/users", index_1.userRoute);
 app.use("/appointment", index_1.appointmentRoute);
 app.use("/diagnosis", index_1.diagnosisRoute);
@@ -30,7 +31,7 @@ app.use("/admission", index_1.admission);
 app.use("/doctors", index_1.doctorRoute);
 app.use("/book_appointments", index_1.bookAppointment);
 app.all("*", (req, res) => {
-    res.status(404).send("Not Found");
+    res.status(404).send("Page Not Found");
 });
 app.use((err, req, res, next) => {
     res.status(err.status || 500).send();

@@ -18,7 +18,8 @@ export class AppointmentModel {
     async getAppointment ():Promise<Appointment[]> {
         try {
             const db_connection = await client_dev.connect()
-            const sql = "select * from appointments join patients on patients.id::varchar = appointments.patients_id join doctors on doctors.id_doctor::varchar=appointments.doctor_id";
+            // const sql = "select * from appointments join patients on patients.id::varchar = appointments.patients_id join doctors on doctors.id_doctor::varchar=appointments.doctor_id";
+            const sql = "select * from appointments join patients on patients.id::varchar = appointments.patients_id join doctors on doctors.id_doctor::varchar=appointments.doctor_id join users on users.id = doctors.id_doctor"
             const result = await db_connection.query(sql)
             const response = result
             return response.rows

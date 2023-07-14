@@ -30,7 +30,8 @@ class AppointmentModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db_connection = yield database_1.client_dev.connect();
-                const sql = "select * from appointments join patients on patients.id::varchar = appointments.patients_id join doctors on doctors.id_doctor::varchar=appointments.doctor_id";
+                // const sql = "select * from appointments join patients on patients.id::varchar = appointments.patients_id join doctors on doctors.id_doctor::varchar=appointments.doctor_id";
+                const sql = "select * from appointments join patients on patients.id::varchar = appointments.patients_id join doctors on doctors.id_doctor::varchar=appointments.doctor_id join users on users.id = doctors.id_doctor";
                 const result = yield db_connection.query(sql);
                 const response = result;
                 return response.rows;

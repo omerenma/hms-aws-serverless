@@ -3,7 +3,6 @@ import { diagnosisSchema } from "../helpers/diagnosisVallidation";
 import { DiagnosismentModel } from "../models/Diagnosis";
 const diagnosis = new DiagnosismentModel();
 export const createDiagnosis = async (req: Request, res: Response) => {
-  console.log(req.body)
   try {
     const {
       bill,
