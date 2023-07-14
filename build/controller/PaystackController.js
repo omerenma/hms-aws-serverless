@@ -43,7 +43,7 @@ class PaystackController {
             }
         });
         this.verifyPayment = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            console.log(req.query, 'query parameter');
+            // console.log(req.body, 'query parameter')
             if (!req.query.reference) {
                 throw new Error('Missing transaction reference');
             }
