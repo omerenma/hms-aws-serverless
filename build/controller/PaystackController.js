@@ -49,6 +49,10 @@ class PaystackController {
             }
             const data = yield PaystackApi_1.default.verifyPayment(req.query.reference);
             console.log('Verify :', data);
+            res.status(200).send({
+                message: "Subscription verified successfully",
+                data
+            });
         });
     }
 }

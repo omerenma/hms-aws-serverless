@@ -33,14 +33,14 @@ class PaystackController {
   };
 
   verifyPayment = async (req:Request, res:Response) => {
-    console.log(req.query, 'query parameter')
-    if(!req.query.reference){
+    // console.log(req.body, 'query parameter')
+    if(!req.params.reference){
         throw new Error('Missing transaction reference')
     }
 
-    const data= await paystackApi.verifyPayment(req.query.reference as string)
+    const data= await paystackApi.verifyPayment(req.params.reference as string)
     console.log('Verify :', data)
-    
+
     res.status(200).send({
         message:"Subscription verified successfully",
         data
