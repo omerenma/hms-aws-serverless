@@ -55,39 +55,3 @@ class PaystackController {
 const paystackController = new PaystackController()
 export default paystackController
 
-// export const paystack_payment = async (req:Request, res:Response) => {
-//     try {
-//         const data = req.body
-//         axios({
-//             url: config.paystack_base_uri as string,
-//             method:'POST',
-//             data:JSON.stringify(data),
-//             headers:{
-//                 'Content-Type':"application/json",
-//                 Authorization:`Bearer ${config.paystack_secret as string}`
-//             }
-//         })
-
-//     } catch (error:any) {
-//         console.log(error.message)
-//     }
-
-// }
-
-// export const inializeTransaction = async (req:Request, res:Response) =>{
-//     try {
-//         const response = await axios({
-//             url:`${config.paystack_base_uri}/initialize`,
-//             method:'POST',
-//             data:JSON.stringify(req.body),
-//             headers:{
-//                 'Content-Type':'application/json',
-//                 Authorization:`Bearer ${config.paystack_secret as string}`
-//             }
-//         })
-//         console.log('Initialize reponse', response)
-//         return response.data
-//     } catch (error:any) {
-//         console.log(error.message)
-//     }
-// }
