@@ -58,6 +58,7 @@ class PaystackApi extends PaystackBaseApi {
     constructor(){
         super(config.paystack_base_uri as string)
     }
+    
     initializePayment = async (paymentDetails:InitializePaymentArgs) => {
         const response = await this.post(`/transaction/initialize`,
             paymentDetails,
@@ -71,7 +72,7 @@ class PaystackApi extends PaystackBaseApi {
 
     verifyPayment = async (paymentReference: string) => {
 
-       const response = await this.get(`/transaction/verify/${paymentReference}`, 
+       const response =  this.get(`/transaction/verify/${paymentReference}`, 
        this.requestInt
        )
        return response
