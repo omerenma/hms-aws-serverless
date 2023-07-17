@@ -33,13 +33,13 @@ class PaystackController {
                     },
                 };
                 const data = yield PaystackApi_1.default.initializePayment(paymentDetails);
-                return res.status(axios_1.HttpStatusCode.Ok).send({
+                return res.status(axios_1.HttpStatusCode.Ok).json({
                     message: "Payment initialized successfully",
                     data,
                 });
             }
             catch (error) {
-                console.log(error);
+                return error.message;
             }
         });
         this.verifyPayment = (req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -48,13 +48,13 @@ class PaystackController {
                     throw new Error('Missing transaction reference');
                 }
                 const data = yield PaystackApi_1.default.verifyPayment(req.params.reference);
-                res.status(200).json({
-                    message: "Subscription verified successfully",
-                    data: data
+                return res.status(axios_1.HttpStatusCode.Ok).json({
+                    message: "Subscription verified",
+                    data
                 });
             }
             catch (error) {
-                return error;
+                return error.message;
             }
         });
         // console.log(req.body, 'query parameter')

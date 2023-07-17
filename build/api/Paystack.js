@@ -38,7 +38,7 @@ class PaystackBaseApi {
             }
         });
         this.get = (uri, args, requestInit) => {
-            this.fetch(uri, undefined, args, Object.assign(Object.assign({}, requestInit), { method: "GET" }));
+            return this.fetch(uri, undefined, args, Object.assign(Object.assign({}, requestInit), { method: "GET" }));
         };
         this.post = (uri, body, args, requestInit) => {
             const bodyString = body ? JSON.stringify(body) : undefined;

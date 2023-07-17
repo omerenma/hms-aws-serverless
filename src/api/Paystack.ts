@@ -38,7 +38,7 @@ class PaystackBaseApi {
     args?: Record<string, any>,
     requestInit?: RequestInit
   ) => {
-    this.fetch(uri, undefined, args, { ...requestInit, method: "GET" });
+   return this.fetch(uri, undefined, args, { ...requestInit, method: "GET" });
   };
 
   post = (

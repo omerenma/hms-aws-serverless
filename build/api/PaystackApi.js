@@ -19,7 +19,7 @@ class PaystackApi extends Paystack_1.default {
         super(config_1.default.paystack_base_uri);
         this.requestInt = {
             headers: {
-                'Content-Type': "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${config_1.default.paystack_secret}`
             }
         };
@@ -28,7 +28,7 @@ class PaystackApi extends Paystack_1.default {
             return response.data;
         });
         this.verifyPayment = (paymentReference) => __awaiter(this, void 0, void 0, function* () {
-            const response = this.get(`/transaction/verify/${paymentReference}`, this.requestInt);
+            const response = yield this.get(`/transaction/verify/${paymentReference}`, this.requestInt);
             return response;
         });
     }

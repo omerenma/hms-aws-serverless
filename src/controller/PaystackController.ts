@@ -23,12 +23,15 @@ class PaystackController {
       };
 
       const data = await paystackApi.initializePayment(paymentDetails);
-      return res.status(HttpStatusCode.Ok).send({
+      
+
+      return res.status(HttpStatusCode.Ok).json({
         message: "Payment initialized successfully",
         data,
       });
-    } catch (error) {
-        console.log(error)
+
+    } catch (error:any) {
+        return error.message
     }
   };
 
@@ -37,13 +40,15 @@ class PaystackController {
         if(!req.params.reference){
             throw new Error('Missing transaction reference')
         }
-        const data= await paystackApi.verifyPayment(req.params.reference as string)
-        res.status(200).json({
-            message:"Subscription verified successfully",
-            data:data
+        const data= await paystackApi.verifyPayment(req.params.reference)
+
+        
+      return res.status(HttpStatusCode.Ok).json({
+            message:"Subscription verified",
+            data
         })
-    } catch (error) {
-        return error
+    } catch (error:any) {
+        return error.message
       }
     }
     // console.log(req.body, 'query parameter')

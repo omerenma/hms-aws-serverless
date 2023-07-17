@@ -14,7 +14,7 @@ const config = {
     RDS_PASSWORD:process.env.RDS_PASSWORD,
     serverPort:process.env.server,
     paystack_base_uri:process.env.PAYSTACK_BASE_URI,
-    paystack_secret:process.env.PAYSTACK_TEST_SECRET_KEY
+    paystack_secret:process.env.PAYSTACK_TEST_SECRET_KEY as string
 
 }
 export default config
