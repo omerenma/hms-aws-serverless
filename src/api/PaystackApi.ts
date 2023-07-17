@@ -51,7 +51,6 @@ interface VerifyPaymentResponse {
 class PaystackApi extends PaystackBaseApi {
     requestInt ={
         headers:{
-            'Content-Type':"application/json",
             Authorization:`Bearer ${config.paystack_secret}`
         }
     }
@@ -72,8 +71,8 @@ class PaystackApi extends PaystackBaseApi {
 
     verifyPayment = async (paymentReference: string) => {
 
-       const response =  this.get(`/transaction/verify/:${paymentReference}`, 
-       this.requestInt
+       const response =  this.get(`/transaction/verify/${paymentReference}`, 
+       this.requestInt.headers
        )
        return response
     } 
