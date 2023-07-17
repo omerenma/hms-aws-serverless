@@ -48,7 +48,6 @@ class PaystackController {
                     throw new Error('Missing transaction reference');
                 }
                 const data = yield PaystackApi_1.default.verifyPayment(req.params.reference);
-                console.log('Verify :', data);
                 res.status(200).send({
                     message: "Subscription verified successfully",
                     data

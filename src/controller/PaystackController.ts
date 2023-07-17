@@ -39,7 +39,8 @@ class PaystackController {
         }
 
         const data= await paystackApi.verifyPayment(req.params.reference as string)
-        console.log('Verify :', data)
+
+
         res.status(200).send({
             message:"Subscription verified successfully",
             data
