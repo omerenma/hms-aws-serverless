@@ -44,10 +44,11 @@ class PaystackController {
         });
         this.verifyPayment = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
-                if (!req.params.reference) {
+                const { reference } = req.body;
+                if (!reference) {
                     throw new Error('Missing transaction reference');
                 }
-                const data = yield PaystackApi_1.default.verifyPayment(req.params.reference);
+                const data = yield PaystackApi_1.default.verifyPayment(reference);
                 return res.status(axios_1.HttpStatusCode.Ok).json({
                     message: "Subscription verified",
                     data

@@ -19,9 +19,17 @@ dotenv.config();
 const app =  express();
 
 app.use(express.json());
-app.use(cors({
-  origin:'https://hms-next.vercel.app'
-}));
+
+
+let corsOptions = {
+  origin: 'https://hms-next.vercel.app/',
+  credentials:true,
+  optionsSuccessStatus: 200, // For legacy browser support
+  methods: ["GET, POST"]
+}
+
+app.use(cors(corsOptions));
+
 
 client_dev.connect((err) => {
   if (err) {
@@ -36,7 +44,9 @@ app.get("/hello", (req: express.Request, res: express.Response) => {
   res.send("Hello Elastic Bean Stalk");
 });
 
-app.use('/subscription', paystack)
+
+
+app.use('/subscription',  paystack)
 app.use("/users", userRoute);
 app.use("/appointment", appointmentRoute);
 app.use("/diagnosis", diagnosisRoute);

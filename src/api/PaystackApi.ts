@@ -1,3 +1,4 @@
+import axios from "axios";
 import config from "../config/config";
 import PaystackBaseApi from "./Paystack";
 
@@ -53,7 +54,11 @@ class PaystackApi extends PaystackBaseApi {
         headers:{
             'Content-Type':'application/json',
             Authorization:`Bearer ${config.paystack_secret}`
-
+        }
+    }
+    getTequestInt ={
+        headers:{
+            Authorization:`Bearer ${config.paystack_secret}`
         }
     }
     constructor(){
@@ -71,11 +76,16 @@ class PaystackApi extends PaystackBaseApi {
 
    
     verifyPayment = async (paymentReference: string) => {
+        const response = await axios.get("https://api.paystack.co/transaction/verify/"+paymentReference, {
+            headers:{
+                Authorization: `Bearer sk_test_25cb401b5cca6f6fe50498949d3689b4629e3a81`
+            }
+        })
 
-       const response = await  this.get(`/transaction/verify/${paymentReference}`, 
-       this.requestInt.headers
-       )
-       return response
+    //    const response = await  this.get(`/transaction/verify/${paymentReference}`, 
+    //    this.getTequestInt.headers
+    //    )
+       return response.data
     } 
 
 }
