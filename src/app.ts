@@ -22,10 +22,10 @@ app.use(express.json());
 
 
 let corsOptions = {
-  origin: 'https://hms-next.vercel.app/',
+  origin: 'https://hms-next.vercel.app',
   credentials:true,
   optionsSuccessStatus: 200, // For legacy browser support
-  methods: ["GET, POST"]
+  methods: ["GET", "POST"]
 }
 
 app.use(cors(corsOptions));

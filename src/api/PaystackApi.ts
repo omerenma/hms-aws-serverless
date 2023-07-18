@@ -75,8 +75,8 @@ class PaystackApi extends PaystackBaseApi {
     }
 
    
-    verifyPayment = async (paymentReference: string) => {
-        const response = await axios.get("https://api.paystack.co/transaction/verify/"+paymentReference, {
+    verifyPayment = async (reference: string) => {
+        const response = await axios.get("https://api.paystack.co/transaction/verify/"+reference, {
             headers:{
                 Authorization: `Bearer sk_test_25cb401b5cca6f6fe50498949d3689b4629e3a81`
             }

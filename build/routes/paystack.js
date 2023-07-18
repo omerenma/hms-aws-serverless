@@ -7,6 +7,6 @@ const express_1 = __importDefault(require("express"));
 // import {inializeTransaction, paystack_payment} from '../api/PaystackApi'
 const PaystackController_1 = __importDefault(require("../controller/PaystackController"));
 const router = express_1.default.Router();
-router.post('/verify', PaystackController_1.default.verifyPayment);
+router.get('/verify/:reference', PaystackController_1.default.verifyPayment);
 router.post('/initialize', PaystackController_1.default.initializePayment);
 exports.default = router;

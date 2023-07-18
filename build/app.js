@@ -12,8 +12,9 @@ const app = express();
 app.use(express.json());
 let corsOptions = {
     origin: 'https://hms-next.vercel.app',
+    credentials: true,
     optionsSuccessStatus: 200,
-    methods: "GET, POST"
+    methods: ["GET", "POST"]
 };
 app.use(cors(corsOptions));
 database_1.client_dev.connect((err) => {

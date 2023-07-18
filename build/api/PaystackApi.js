@@ -33,8 +33,8 @@ class PaystackApi extends Paystack_1.default {
             const response = yield this.post(`/transaction/initialize`, paymentDetails, undefined, this.requestInt);
             return response.data;
         });
-        this.verifyPayment = (paymentReference) => __awaiter(this, void 0, void 0, function* () {
-            const response = yield axios_1.default.get("https://api.paystack.co/transaction/verify/" + paymentReference, {
+        this.verifyPayment = (reference) => __awaiter(this, void 0, void 0, function* () {
+            const response = yield axios_1.default.get("https://api.paystack.co/transaction/verify/" + reference, {
                 headers: {
                     Authorization: `Bearer sk_test_25cb401b5cca6f6fe50498949d3689b4629e3a81`
                 }

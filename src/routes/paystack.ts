@@ -6,6 +6,6 @@ import paystackController from '../controller/PaystackController'
 const router = express.Router()
 
 
-router.post('/verify' ,  paystackController.verifyPayment )
+router.get('/verify/:reference' ,  paystackController.verifyPayment )
 router.post('/initialize' , paystackController.initializePayment)
 export default router
