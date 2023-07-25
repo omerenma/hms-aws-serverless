@@ -11,6 +11,7 @@ import {
   doctorRoute,
   bookAppointment,
   paystack,
+  businnes
 } from "./routes/index";
 import { client, client_dev } from "./database/database";
 import config from "./config/config";
@@ -54,6 +55,7 @@ app.use("/patient", patientRoute);
 app.use("/admission", admission);
 app.use("/doctors", doctorRoute);
 app.use("/book_appointments", bookAppointment);
+app.use('/business', businnes)
 app.all("*", (req: express.Request, res: express.Response) => {
   res.status(404).send("Page Not Found");
 });

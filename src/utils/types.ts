@@ -29,3 +29,18 @@ export interface LoginFailed {
     token:string;
     role:string
  }
+
+ export interface Subscription {
+    id?:string;
+    subscription_id:number;
+    amount:number;
+    reference:string;
+    name:string;
+    email:string;
+    phone:string;
+    subscription_status?:string;
+    // start_at?: Date;
+    // end_at?:Date;
+    expired?:Boolean;
+    cancel?:Boolean
+ }
