@@ -8,14 +8,13 @@ const bussiness = new BusinessModel()
 const addBiz = new BusinessModel();
 // Add new user
 export const addBussiness = async (req: Request, res: Response) => {
-    console.log(req.body, 'body')
   try {
     const { error, value } = bussinessSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
-    const { first_name, last_name, email, role, phone, password } = req.body;
-    const data = {first_name, last_name, email, role, phone, password };
+    const { name, email, role, phone, address, password } = req.body;
+    const data = {name, email,  phone, role, address, password };
     const query = await bussiness.addBusiness(data);
     return res
       .status(201)

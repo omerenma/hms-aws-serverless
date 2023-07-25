@@ -1,23 +1,24 @@
 import {client, client_dev} from '../database/database'
 import { Businneses } from '../interface/Bussiness';
+const bcrypt = require('bcryptjs')
+
 
 export class BusinessModel {
     async addBusiness(data:Businneses): Promise<[]> {
         try {
                 const db_connection = await client_dev.connect()
-                // const queryId = 'select * from subscription where id = ($1)'
-                // const query_result = await db_connection.query(queryId,[data.id])
+                const queryId = 'select * from business where email = ($1)'
+                const query_result = await db_connection.query(queryId,[data.email])
                 
-                // console.log(query_result.rows, 'id response from db')
-               
-                    const sql = 'INSERT INTO businesses ( first_name, last_name, email, phone, password, role) VALUES ($1, $2, $3, $4, $5, $6) RETURNING * ';
-                    const result =  await db_connection.query(sql, [  data.first_name, data.last_name, data.email, data.phone, data.password, data.role])
+                if(query_result.rows.length > 0){
+                    throw new Error('Business already exists')
+                }
+                const hash =   bcrypt.hashSync(data.password, 10);
+                    const sql = 'INSERT INTO business (name, email, phone,role, address, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING * ';
+                    const result =  await db_connection.query(sql, [  data.name,  data.email, data.phone, data.role, data.address, hash])
                     const response =  result
                     
                      return response.rows[0]
-
-                
-
             
         } catch (error:any) {
             throw new Error(error)

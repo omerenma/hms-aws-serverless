@@ -17,14 +17,13 @@ const bussiness = new Businesses_1.BusinessModel();
 const addBiz = new Businesses_1.BusinessModel();
 // Add new user
 const addBussiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body, 'body');
     try {
         const { error, value } = bussinessValidation_1.bussinessSchema.validate(req.body);
         if (error) {
             return res.status(400).json({ message: error.details[0].message });
         }
-        const { first_name, last_name, email, role, phone, password } = req.body;
-        const data = { first_name, last_name, email, role, phone, password };
+        const { name, email, role, phone, address, password } = req.body;
+        const data = { name, email, phone, role, address, password };
         const query = yield bussiness.addBusiness(data);
         return res
             .status(201)

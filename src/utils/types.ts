@@ -32,6 +32,7 @@ export interface LoginFailed {
 
  export interface Subscription {
     id?:string;
+    //  business_id:string;
     subscription_id:number;
     amount:number;
     reference:string;

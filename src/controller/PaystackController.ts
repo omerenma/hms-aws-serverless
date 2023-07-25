@@ -45,6 +45,7 @@ class PaystackController {
         const data = await paystackApi.verifyPayment(reference)
       
         const body = {
+          
           subscription_id: Number(data.data.id),
           amount:Number(data.data.metadata.amount),
           reference:String(data.data.reference),
