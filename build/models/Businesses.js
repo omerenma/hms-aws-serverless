@@ -16,7 +16,7 @@ class BusinessModel {
     addBusiness(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client_dev.connect();
+                const db_connection = yield database_1.client.connect();
                 const queryId = 'select * from business where email = ($1)';
                 const query_result = yield db_connection.query(queryId, [data.email]);
                 if (query_result.rows.length > 0) {

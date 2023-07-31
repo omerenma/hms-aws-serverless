@@ -11,13 +11,13 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 let corsOptions = {
-    origin: 'https://hms-next.vercel.app',
+    origin: ['https://hms-next.vercel.app', 'http://localhost:3000'],
     credentials: true,
     optionsSuccessStatus: 200,
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
 };
 app.use(cors(corsOptions));
-database_1.client_dev.connect((err) => {
+database_1.client.connect((err) => {
     if (err) {
         console.log("Connection error: ", err.message);
         return;

@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 export class BusinessModel {
     async addBusiness(data:Businneses): Promise<[]> {
         try {
-                const db_connection = await client_dev.connect()
+                const db_connection = await client.connect()
                 const queryId = 'select * from business where email = ($1)'
                 const query_result = await db_connection.query(queryId,[data.email])
                 

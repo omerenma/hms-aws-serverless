@@ -15,15 +15,16 @@ class SubscriptionModel {
     addSubscription(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client_dev.connect();
+                const db_connection = yield database_1.client.connect();
                 const business_email = "SELECT * FROM business where email = ($1)";
-                const query_email = yield db_connection.query(business_email, [data.email]);
+                const query_email = yield db_connection.query(business_email, [
+                    data.email,
+                ]);
                 const business_query = query_email.rows;
                 let business_id;
-                Object.values(business_query).forEach(item => {
+                Object.values(business_query).forEach((item) => {
                     business_id = item.id;
                 });
-                console.log(business_id, 'iddd');
                 const sql = "INSERT INTO subscription (business_id, subscription_id, amount, reference, name, email, phone, subscription_status,  expired) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING * ";
                 const result = yield db_connection.query(sql, [
                     business_id,

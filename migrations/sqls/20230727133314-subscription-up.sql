@@ -5,7 +5,7 @@ CREATE TABLE subscription (
     amount integer not null,
     reference varchar(255) not null,
     name varchar(255) not null,
-    email varchar(255) unique not null,
+    email varchar(255) not null,
     phone varchar(255) not null,
     subscription_status varchar(255) DEFAULT 'pending',
     start_at DATE DEFAULT CURRENT_DATE,

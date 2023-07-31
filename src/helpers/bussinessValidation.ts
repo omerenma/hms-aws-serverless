@@ -6,7 +6,7 @@ export const bussinessSchema = joi.object(
         phone:joi.string().required(),
          email: joi.string().email().exist().required(),
         password: joi.string().required().min(8),
-        role:joi.string().required()
+        //  role:joi.string().required()
     }
 )
 
