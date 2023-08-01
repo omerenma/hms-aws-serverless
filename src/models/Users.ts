@@ -14,14 +14,15 @@ export class UsersModel {
     async addUser(user:Users): Promise<Users> {
         try {
             const db_connection = await client_dev.connect()
+
             const checkEmail = "SELECT * FROM users WHERE email=($1)"
             const query_email = await db_connection.query(checkEmail, [user.email])
             if( query_email.rows.length > 0){
                 throw new Error(`User with email: ${user.email},  already exist.`)
             }else{
                 const hash =   bcrypt.hashSync(user.password, 10);
-                const sql = 'INSERT INTO users (name, email, role, password) VALUES ($1, $2, $3, $4) RETURNING * ';
-                const result = await db_connection.query(sql, [user.name,user.email, user.role,  hash])
+                const sql = 'INSERT INTO users (business_id, name, email, role, password) VALUES ($1, $2, $3, $4, $5) RETURNING * ';
+                const result = await db_connection.query(sql, [user.business_id, user.name, user.email, user.role,  hash])
                 const response =  result
                  return response.rows[0]
             }

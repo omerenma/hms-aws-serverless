@@ -17,7 +17,7 @@ let corsOptions = {
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
 };
 app.use(cors(corsOptions));
-database_1.client.connect((err) => {
+database_1.client_dev.connect((err) => {
     if (err) {
         console.log("Connection error: ", err.message);
         return;

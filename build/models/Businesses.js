@@ -11,20 +11,39 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BusinessModel = void 0;
 const database_1 = require("../database/database");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 class BusinessModel {
     addBusiness(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const db_connection = yield database_1.client.connect();
-                const queryId = 'select * from business where email = ($1)';
+                const db_connection = yield database_1.client_dev.connect();
+                const queryId = "select * from business where email = ($1)";
                 const query_result = yield db_connection.query(queryId, [data.email]);
                 if (query_result.rows.length > 0) {
-                    throw new Error('Business already exists');
+                    throw new Error("Business already exists");
                 }
                 const hash = bcrypt.hashSync(data.password, 10);
-                const sql = 'INSERT INTO business (name, email, phone,role, address, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING * ';
-                const result = yield db_connection.query(sql, [data.name, data.email, data.phone, data.role, data.address, hash]);
+                const sql = "INSERT INTO business (name, email, phone,role, address, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING * ";
+                const sql_users = "INSERT INTO users (business_id, name, email, role, password) VALUES ($1, $2, $3, $4, $5) RETURNING * ";
+                const result = yield db_connection.query(sql, [
+                    data.name,
+                    data.email,
+                    data.phone,
+                    data.role,
+                    data.address,
+                    hash,
+                ]);
+                let business_id;
+                Object.values(result.rows).forEach((item) => {
+                    business_id = item.id;
+                });
+                yield db_connection.query(sql_users, [
+                    business_id,
+                    data.name,
+                    data.email,
+                    data.role,
+                    hash,
+                ]);
                 const response = result;
                 return response.rows[0];
             }

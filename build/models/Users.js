@@ -24,8 +24,8 @@ class UsersModel {
                 }
                 else {
                     const hash = bcrypt.hashSync(user.password, 10);
-                    const sql = 'INSERT INTO users (name, email, role, password) VALUES ($1, $2, $3, $4) RETURNING * ';
-                    const result = yield db_connection.query(sql, [user.name, user.email, user.role, hash]);
+                    const sql = 'INSERT INTO users (business_id, name, email, role, password) VALUES ($1, $2, $3, $4, $5) RETURNING * ';
+                    const result = yield db_connection.query(sql, [user.business_id, user.name, user.email, user.role, hash]);
                     const response = result;
                     return response.rows[0];
                 }

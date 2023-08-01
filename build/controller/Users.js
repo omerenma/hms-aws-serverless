@@ -21,15 +21,15 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (error) {
             return res.status(400).json({ message: error.details[0].message });
         }
-        const { name, email, role, password } = req.body;
-        const data = { name, email, role, password };
+        const { business_id, name, email, role, password } = req.body;
+        const data = { business_id, name, email, role, password };
         const query = yield user.addUser(data);
         return res
             .status(201)
             .json({ message: "New user registered successfully", data: query.name });
     }
     catch (error) {
-        return res.json({ message: error.message });
+        return res.json({ message: error });
     }
 });
 exports.signup = signup;
@@ -50,7 +50,8 @@ const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 name: result && result.name,
                 email: result && result.email,
                 role: result && result.role,
-                id: result && result.id
+                id: result && result.id,
+                business_id: result && result.business_id
             });
         }
         else {

@@ -11,14 +11,14 @@ export const signup = async (req: Request, res: Response) => {
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
-    const { name, email, role, password } = req.body;
-    const data = { name, email, role, password };
+    const {business_id, name, email, role, password } = req.body;
+    const data = {business_id, name, email, role, password };
     const query = await user.addUser(data);
     return res
       .status(201)
       .json({ message: "New user registered successfully", data: query.name });
   } catch (error:any) {
-    return res.json({message:error.message});
+    return res.json({message:error});
   }
 };
 
@@ -45,7 +45,8 @@ export const signin = async (req: Request, res: Response) => {
         name: result && result.name,
         email: result && result.email,
         role: result && result.role,
-        id:result && result.id
+        id:result && result.id,
+        business_id:result && result.business_id
       });
     } else {
       return res.status(400).json({ message: "Invalid login credentials" });
