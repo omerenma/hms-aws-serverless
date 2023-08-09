@@ -10,13 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createEnquiry = void 0;
-const appointmentVallidation_1 = require("../helpers/appointmentVallidation");
+const enquiryValidation_1 = require("../helpers/enquiryValidation");
 const AddEnquiry_1 = require("../models/AddEnquiry");
 const createEnquiry = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const enquiry = new AddEnquiry_1.EnquiryModel();
     try {
         const { name, email, message, } = req.body;
-        const { error, value } = appointmentVallidation_1.appointmentSchema.validate(req.body);
+        const { error, value } = enquiryValidation_1.enquirySchema.validate(req.body);
         if (error) {
             return res.status(400).json({ message: error.details[0].message });
         }

@@ -1,12 +1,12 @@
 import {Request, Response} from 'express'
-import { appointmentSchema } from '../helpers/appointmentVallidation';
+import { enquirySchema } from '../helpers/enquiryValidation';
 import { EnquiryModel } from '../models/AddEnquiry';
 
 export const createEnquiry = async (req:Request, res:Response) => {
   const enquiry = new EnquiryModel()
     try {
         const { name,email, message, } = req.body;
-        const { error, value } = appointmentSchema.validate(req.body);
+        const { error, value } = enquirySchema.validate(req.body);
         if (error) {
           return res.status(400).json({ message: error.details[0].message });
         }
