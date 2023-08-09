@@ -8,8 +8,9 @@ import doctorRoute from './doctors'
 import bookAppointment from './bookAppointment'
 import paystack from './paystack'
 import businnes from './business'
+import enquiry from './enquiry'
 // import { inializeTransaction } from '../controller/PaystackApi'
 
 
 
-export {paystack,  userRoute, appointmentRoute, diagnosisRoute, patientRoute, admission, doctorRoute, bookAppointment, businnes}
+export {paystack,  userRoute, appointmentRoute, diagnosisRoute, patientRoute, admission, doctorRoute, bookAppointment, businnes, enquiry}
