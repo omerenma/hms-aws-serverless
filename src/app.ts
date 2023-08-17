@@ -49,6 +49,8 @@ app.get("/hello", (req: express.Request, res: express.Response) => {
 
 
 app.use('/subscription',  paystack)
+
+
 app.use("/users", userRoute);
 app.use("/appointment", appointmentRoute);
 app.use("/diagnosis", diagnosisRoute);

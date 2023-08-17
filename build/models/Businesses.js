@@ -52,5 +52,20 @@ class BusinessModel {
             }
         });
     }
+    verifyBusiness(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const db_connection = yield database_1.client_dev.connect();
+                const queryId = "select * from business where id = ($1)";
+                const query_result = yield db_connection.query(queryId, [id]);
+                const update = `UPDATE business set verify = 'true' where id = ${id}`;
+                const result = yield db_connection.query(update);
+                return result.rows[0];
+            }
+            catch (error) {
+                throw new Error(error);
+            }
+        });
+    }
 }
 exports.BusinessModel = BusinessModel;

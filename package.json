@@ -37,6 +37,7 @@
     "mysql2": "^3.3.3",
     "node-cron": "^3.0.2",
     "node-fetch": "^2.6.12",
+    "nodemailer": "^6.9.4",
     "nodemon": "^2.0.22",
     "pg": "^8.10.0",
     "pg-hstore": "^2.3.4",

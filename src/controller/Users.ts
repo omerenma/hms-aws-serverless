@@ -34,11 +34,7 @@ export const signin = async (req: Request, res: Response) => {
 
     const result = await user.login(email, password);
     if (result) {
-      let payload = jwt.sign(
-        { payload: result },
-        process.env.TOKEN_SECRET as string,
-        { expiresIn: "10 minutes" }
-      );
+      let payload = jwt.sign({ payload: result },process.env.TOKEN_SECRET as string, { expiresIn: "10 minutes" });
       return res.status(200).json({
         message: "Login successful",
         token: payload,

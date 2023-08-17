@@ -8,12 +8,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addBussiness = void 0;
+exports.verifyBussiness = exports.addBussiness = void 0;
 const bussinessValidation_1 = require("../helpers/bussinessValidation");
 const Businesses_1 = require("../models/Businesses");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/emailVerification");
+const nodemailer = require('nodemailer');
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const bussiness = new Businesses_1.BusinessModel();
+const transporter = nodemailer.createTransport({
+    // host:process.env.HOST,
+    service: "GMAIL",
+    port: 587,
+    secure: true,
+    auth: {
+        user: process.env.EMAIL_SMTP_USER,
+        pass: process.env.EMAIL_VERIFY_SECRET
+    }
+});
 const addBussiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { error, value } = bussinessValidation_1.bussinessSchema.validate(req.body);
@@ -27,13 +44,34 @@ const addBussiness = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             phone,
             address,
             role: "admin",
-            password
+            password,
         };
         const result = yield bussiness.addBusiness(data);
-        return res.status(201).json({ message: "New Businnes registered successfully", data: result });
+        const emailToken = jwt.sign({ userId: yield result.id }, process.env.EMAIL_VERIFY_SECRET, { expiresIn: "1d" });
+        const url = `http://localhost:5000/business/verify/${emailToken}`;
+        transporter.sendMail({
+            to: result.email,
+            subject: "Email confirmation",
+            html: `Please click the link to confirm your email: <a href="${url}>${url}</a>"`
+        });
+        res.status(201).json({ message: "New Businnes registered successfully", data: result });
     }
     catch (error) {
         return res.json({ message: error.message });
     }
 });
 exports.addBussiness = addBussiness;
+const verifyBussiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = jwt.verify(req.params.token, process.env.EMAIL_VERIFY_SECRET);
+        console.log(id.userId, 'token id');
+        // update verify status on the business table to true
+        const verify = yield bussiness.verifyBusiness(id.userId);
+        if (verify)
+            res.redirect('http://localhost:5000/users/signin');
+    }
+    catch (error) {
+        return error;
+    }
+});
+exports.verifyBussiness = verifyBussiness;

@@ -5,5 +5,6 @@ create table business (
     phone varchar(255) not null,
     role varchar(255) DEFAULT 'admin',
     address text not null,
-    password varchar(255) not null
+    password varchar(255) not null,
+    verify boolean DEFAULT false
 )
