@@ -53,10 +53,9 @@ export class BusinessModel {
   async verifyBusiness(id: string): Promise<[]> {
     try {
       const db_connection = await client_dev.connect();
-      const queryId = "select * from business where id = ($1)";
-      const query_result = await db_connection.query(queryId, [id]);
-      const update = `UPDATE business set verify = 'true' where id = ${id}`;
+      const update = `update business set verify = 'true' where id = ${id}`;
       const result =  await db_connection.query(update)
+      console.log(result, 'result')
       
       return result.rows[0]
     } catch (error: any) {

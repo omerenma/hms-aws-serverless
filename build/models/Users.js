@@ -9,9 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UsersModel = void 0;
+exports.UsersModel = exports.sessions = void 0;
 const database_1 = require("../database/database");
 const bcrypt = require('bcryptjs');
+exports.sessions = {};
 class UsersModel {
     addUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -73,7 +74,6 @@ class UsersModel {
     // Get all users
     getUserById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(id);
             try {
                 const db_connection = database_1.client_dev.connect();
                 const sql = `SELECT * FROM users WHERE id = ($1)`;
@@ -133,6 +133,40 @@ class UsersModel {
             catch (error) {
                 return error;
             }
+        });
+    }
+    getSession(sessionId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const session = exports.sessions[sessionId];
+            return session && session.valid ? session : null;
+        });
+    }
+    invalidateSession(sessionId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const session = exports.sessions[sessionId];
+            if (session) {
+                // @ts-ignore
+                exports.sessions[sessionId].valid = false;
+            }
+            return exports.sessions[sessionId];
+        });
+    }
+    createSession(email, name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // @ts-ignore
+            const sessionId = Object.keys(exports.sessions).length + 1;
+            const session = { sessionId, email, valid: true, name };
+            // @ts-ignore
+            exports.sessions[sessionId] = session;
+            return session;
+        });
+    }
+    getUser(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const db_connection = yield database_1.client_dev.connect();
+            const checkEmail = "SELECT * FROM users WHERE email=($1)";
+            const query_email = yield db_connection.query(checkEmail, [email]);
+            return query_email;
         });
     }
 }

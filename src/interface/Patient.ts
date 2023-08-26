@@ -7,7 +7,7 @@ export interface Patient {
     email:string; 
     phone_no:string;
     next_of_kin_name:string;
-    next_of_kin_phone_no:string;
+    next_of_kin_phone:string;
 }
 export interface UpdatePatient {
     id:string;

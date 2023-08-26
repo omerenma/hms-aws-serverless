@@ -52,7 +52,6 @@ class UsersModel {
     }
     // Get all users
     async getUserById(id) {
-        console.log(id);
         try {
             const db_connection = database_1.client.connect();
             const sql = `SELECT * FROM users WHERE id = ($1)`;

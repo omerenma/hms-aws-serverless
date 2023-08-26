@@ -12,30 +12,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const nodemailer = require('nodemailer');
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-const sendEmail = (email, subject, html, EMAIL_SMTP_USER) => __awaiter(void 0, void 0, void 0, function* () {
+exports.comprehend = void 0;
+const aws_sdk_1 = __importDefault(require("aws-sdk"));
+const comprehend = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const transporter = nodemailer.createTransport({
-            // host:process.env.HOST,
-            service: "GMAIL",
-            port: 587,
-            secure: true,
-            auth: {
-                user: process.env.EMAIL_SMTP_USER,
-                pass: process.env.EMAIL_VERIFY_SECRET
-            }
-        });
-        yield transporter.sendMail({
-            from: EMAIL_SMTP_USER,
-            to: email,
-            subject: subject,
-            text: html
-        });
+        var params = {
+            Text: 'malaria'
+        };
+        const comprehendmedical = new aws_sdk_1.default.ComprehendMedical();
+        comprehendmedical.detectEntitiesV2(params).promise();
+        res.send(comprehendmedical);
     }
     catch (error) {
-        return error;
+        console.log('error', error);
     }
 });
-module.exports = sendEmail;
+exports.comprehend = comprehend;

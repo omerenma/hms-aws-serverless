@@ -63,12 +63,11 @@ const addBussiness = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.addBussiness = addBussiness;
 const verifyBussiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const id = jwt.verify(req.params.token, process.env.EMAIL_VERIFY_SECRET);
-        console.log(id.userId, 'token id');
-        // update verify status on the business table to true
-        const verify = yield bussiness.verifyBusiness(id.userId);
-        if (verify)
-            res.redirect('http://localhost:5000/users/signin');
+        const user_data = jwt.verify(req.params.token, process.env.EMAIL_VERIFY_SECRET);
+        const id = user_data.userId;
+        const verify = yield bussiness.verifyBusiness(id);
+        console.log(verify, 'verified email');
+        res.send(verify);
     }
     catch (error) {
         return error;

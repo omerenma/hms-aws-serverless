@@ -8,7 +8,7 @@ interface User{
     role:string
 }
 
-
+export const sessions:Record<string, {sessionId:string; email:string; valid:true}>={}
 
 export class UsersModel {
     async addUser(user:Users): Promise<Users> {
@@ -64,7 +64,6 @@ export class UsersModel {
 
      // Get all users
      async getUserById (id:number): Promise <Users[]> {
-        console.log(id)
         try {
          const db_connection = client_dev.connect()
          const sql = `SELECT * FROM users WHERE id = ($1)`
@@ -120,6 +119,35 @@ export class UsersModel {
         } catch (error:any) {
          return error
         }
+    }
+
+    async getSession(sessionId:string) {
+        const session = sessions[sessionId]
+        return session && session.valid ? session : null;
+    }
+    async invalidateSession(sessionId:string) {
+        const session = sessions[sessionId]
+        if(session){
+            // @ts-ignore
+            sessions[sessionId].valid = false
+        }
+        return sessions[sessionId]
+    }
+    async createSession(email:string, name:string) {
+        // @ts-ignore
+        const sessionId = Object.keys(sessions).length + 1
+        const session = {sessionId, email, valid:true, name}
+         // @ts-ignore
+        sessions[sessionId] = session;
+        return session
+    }
+
+    async getUser(email:string){
+        const db_connection = await client_dev.connect()
+
+        const checkEmail = "SELECT * FROM users WHERE email=($1)"
+        const query_email = await db_connection.query(checkEmail, [email])
+        return query_email
     }
 
 }

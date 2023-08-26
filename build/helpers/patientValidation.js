@@ -10,5 +10,5 @@ exports.patientSchema = joi.object({
     residential_address: joi.string().required(),
     phone_no: joi.string().required(),
     next_of_kin_name: joi.string().required(),
-    next_of_kin_phone_no: joi.string().required(),
+    next_of_kin_phone: joi.string().required(),
 });

@@ -25,7 +25,6 @@ const createAppointment = (req, res) => __awaiter(void 0, void 0, void 0, functi
         return res.status(201).json({ message: `An appointment has been scheduled with ${data.doctor_id} and ${data.patients_id} `, data: query });
     }
     catch (error) {
-        console.log('Appointment Error', error);
         return res.status(500).json({ message: "Something went wrong...", error });
     }
 });

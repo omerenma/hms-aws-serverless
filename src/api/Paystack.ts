@@ -28,7 +28,6 @@ class PaystackBaseApi {
       if (response.status === HttpStatusCode.NoContent) return;
       return response.json();
     } catch (error: any) {
-      console.log(error.message, "errorsss");
       throw new Error(error.message);
     }
   };

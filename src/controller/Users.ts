@@ -1,8 +1,17 @@
 import { Request, Response } from "express";
 import { registerSchema, loginSchema } from "../helpers/userValidation";
 import { UsersModel } from "../models/Users";
-const  jwt  = require("jsonwebtoken");
+import { signJWT, verifyJWT } from "../utils/jwt.utils";
+export const sessions:Record<string, {sessionId:string; email:string; valid:true}>={}
 
+const createSession = (email:string, name:string) => {
+  // @ts-ignore
+  const sessionId = Object.keys(sessions).length + 1
+  const session = {sessionId, email, valid:true, name}
+   // @ts-ignore
+  sessions[sessionId] = session;
+  return session
+}
 const user = new UsersModel();
 // Add new user
 export const signup = async (req: Request, res: Response) => {
@@ -24,6 +33,7 @@ export const signup = async (req: Request, res: Response) => {
 
 // Signin user
 export const signin = async (req: Request, res: Response) => {
+ let refreshingToken = ""
   try {
     const { error, value } = loginSchema.validate(req.body);
     if (error) {
@@ -31,26 +41,99 @@ export const signin = async (req: Request, res: Response) => {
     }
 
     const { email, password } = req.body;
-
+    
     const result = await user.login(email, password);
+    const object:any = {
+      email:result.email,
+      name:result.name
+    }
+    
     if (result) {
-      let payload = jwt.sign({ payload: result },process.env.TOKEN_SECRET as string, { expiresIn: "10 minutes" });
-      return res.status(200).json({
-        message: "Login successful",
-        token: payload,
-        name: result && result.name,
-        email: result && result.email,
-        role: result && result.role,
-        id:result && result.id,
-        business_id:result && result.business_id
-      });
+
+      // create session for logged in user
+     const session =  createSession(object.email, object.name)
+     const accessToken = signJWT({payload:result, sessionId:session.sessionId},'5s' )
+     const refreshToken = signJWT({sessionId:session.sessionId},'1y' )
+     
+
+     const decodedToken:any = verifyJWT(accessToken, process.env.TOKEN_SECRET as string).payload
+     const decodedRefreshToken:any = verifyJWT(refreshToken, process.env.TOKEN_SECRET as string).payload
+
+    //  refreshingToken = decodedRefreshToken['payload']['id'] 
+     res.cookie("accessToken", accessToken, {
+        maxAge:300000, // 5 minutes
+        httpOnly:true
+      })
+
+      res.cookie('refreshToken', refreshToken, {
+        maxAge: 3.154e10, // 1 years
+        httpOnly:true
+      })
+      if(result.role === 'admin'){
+        return res.status(200).json({
+           message: "Login successful",
+          accessToken: accessToken,
+          refreshToken:refreshToken,
+           name: decodedToken['payload']['name'],
+           email: decodedToken['payload']['email'],
+           role: decodedToken['payload']['role'],
+           id:decodedToken['payload']['id'],
+          business_id:decodedToken['payload']['business_id'],
+           session:session
+        });
+      }else{
+        return res.status(200).json({
+          message: "Login successful",
+          token: accessToken,
+           name: decodedToken['payload']['name'],
+           email: decodedToken['payload']['email'],
+           role: decodedToken['payload']['role'],
+           id:decodedToken['payload']['id'],
+          business_id:decodedToken['payload']['business_id'],
+          session:session
+
+        });
+      }
+     
     } else {
       return res.status(400).json({ message: "Invalid login credentials" });
     }
-  } catch (error) {
-    return res.json({message:error});
+  } catch (error:any) {
+    return res.json({message:error.message});
   }
 };
+
+// Session handler
+export const getSession = async(req?:Request, res?:Response) => {
+  try {
+    // @ts-ignore
+    // @ts-ignore
+    return res.send(req.user)
+
+    
+  } catch (error) {
+    console.log(error)
+    
+  }
+}
+
+// Logout handler
+
+ export const logout = async (req:Request, res:Response) => {
+  res.cookie("accessToken", "", {
+    maxAge:0,
+    httpOnly:true
+  })
+
+  res.cookie("refreshToken", "", {
+    maxAge:0,
+    httpOnly:true
+  })
+  // @ts-ignore
+ const session = user.invalidateSession(req.user.sessionId)
+  res.send(session)
+ }
+
 
 // Get all users
 export const getUsers = async (req: Request, res: Response) => {

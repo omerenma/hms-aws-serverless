@@ -58,12 +58,12 @@ export const addBussiness = async (req: Request, res: Response) => {
 
 export const verifyBussiness = async (req: Request, res: Response) => {
   try {
-    const id = jwt.verify(req.params.token, process.env.EMAIL_VERIFY_SECRET)
-    console.log(id.userId, 'token id')
-    // update verify status on the business table to true
+    const user_data = jwt.verify(req.params.token, process.env.EMAIL_VERIFY_SECRET)
 
-   const verify =  await bussiness.verifyBusiness(id.userId)
-   if(verify) res.redirect('http://localhost:5000/hello')
+    const id = user_data.userId
+   const verify =  await bussiness.verifyBusiness(id)
+   console.log(verify, 'verified email')
+   res.send(verify)
 
   } catch (error) {
     return error

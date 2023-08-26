@@ -16,7 +16,7 @@ class PatientModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db_connection = yield database_1.client_dev.connect();
-                const sql = "INSERT INTO patients (name, sex, dob,residential_address , email, phone_no, next_of_kin_name, next_of_kin_phone_no) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * ";
+                const sql = "INSERT INTO patients (name, sex, dob,residential_address , email, phone_no, next_of_kin_name, next_of_kin_phone) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * ";
                 const result = yield (db_connection).query(sql, [
                     user.name,
                     user.sex,
@@ -25,7 +25,7 @@ class PatientModel {
                     user.email,
                     user.phone_no,
                     user.next_of_kin_name,
-                    user.next_of_kin_phone_no,
+                    user.next_of_kin_phone,
                 ]);
                 const response = result;
                 return response.rows[0];

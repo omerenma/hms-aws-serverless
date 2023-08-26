@@ -25,7 +25,6 @@ const createEnquiry = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return res.status(201).json({ message: `Message successfully sent` });
     }
     catch (error) {
-        console.log('Appointment Error', error);
         return res.status(500).json({ message: "Something went wrong...", error });
     }
 });

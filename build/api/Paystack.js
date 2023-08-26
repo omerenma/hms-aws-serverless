@@ -33,7 +33,6 @@ class PaystackBaseApi {
                 return response.json();
             }
             catch (error) {
-                console.log(error.message, "errorsss");
                 throw new Error(error.message);
             }
         });

@@ -10,9 +10,9 @@ export const createPatient = async (req: Request, res: Response) => {
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
-    const { name, dob,sex,residential_address ,email,phone_no,next_of_kin_name,next_of_kin_phone_no} = req.body;
+    const { name, dob,sex,residential_address ,email,phone_no,next_of_kin_name,next_of_kin_phone} = req.body;
    
-    const data = {name,dob,sex,email,residential_address ,phone_no,next_of_kin_name,next_of_kin_phone_no,} 
+    const data = {name,dob,sex,email,residential_address ,phone_no,next_of_kin_name,next_of_kin_phone,} 
 
     const result = await patient.addPatient(data);
     return res.status(201).json({ message: "Patient added successfully", data: result });

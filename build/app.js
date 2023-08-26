@@ -1,15 +1,23 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handler = void 0;
 const express = require("express");
 const serverless = require("serverless-http");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const index_1 = require("./routes/index");
 const database_1 = require("./database/database");
+const deserializeUser_1 = __importDefault(require("./middlewares/deserializeUser"));
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use((0, cookie_parser_1.default)());
+// This deserializeUser middleware function gets called on every request
+app.use(deserializeUser_1.default);
 let corsOptions = {
     origin: ['https://hms-next.vercel.app', 'http://localhost:3000'],
     credentials: true,
@@ -38,6 +46,7 @@ app.use("/doctors", index_1.doctorRoute);
 app.use("/book_appointments", index_1.bookAppointment);
 app.use('/business', index_1.businnes);
 app.use('/enquiry', index_1.enquiry);
+app.use('/comprehend-mdeical', index_1.comprehendMedical);
 app.all("*", (req, res) => {
     res.status(404).send("Page Not Found");
 });
@@ -45,6 +54,6 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500).send();
 });
 app.listen(5000, () => {
-    console.table("Server running on port 5000");
+    console.log("Server running on port 5000");
 });
 exports.handler = serverless(app);

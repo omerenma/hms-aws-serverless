@@ -9,10 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDoctors = exports.editUser = exports.deleteUser = exports.getUserById = exports.getUsers = exports.signin = exports.signup = void 0;
+exports.getDoctors = exports.editUser = exports.deleteUser = exports.getUserById = exports.getUsers = exports.logout = exports.getSession = exports.signin = exports.signup = exports.sessions = void 0;
 const userValidation_1 = require("../helpers/userValidation");
 const Users_1 = require("../models/Users");
-const jwt = require("jsonwebtoken");
+const jwt_utils_1 = require("../utils/jwt.utils");
+exports.sessions = {};
+const createSession = (email, name) => {
+    // @ts-ignore
+    const sessionId = Object.keys(exports.sessions).length + 1;
+    const session = { sessionId, email, valid: true, name };
+    // @ts-ignore
+    exports.sessions[sessionId] = session;
+    return session;
+};
 const user = new Users_1.UsersModel();
 // Add new user
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -35,6 +44,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.signup = signup;
 // Signin user
 const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let refreshingToken = "";
     try {
         const { error, value } = userValidation_1.loginSchema.validate(req.body);
         if (error) {
@@ -42,27 +52,88 @@ const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         const { email, password } = req.body;
         const result = yield user.login(email, password);
+        const object = {
+            email: result.email,
+            name: result.name
+        };
         if (result) {
-            let payload = jwt.sign({ payload: result }, process.env.TOKEN_SECRET, { expiresIn: "10 minutes" });
-            return res.status(200).json({
-                message: "Login successful",
-                token: payload,
-                name: result && result.name,
-                email: result && result.email,
-                role: result && result.role,
-                id: result && result.id,
-                business_id: result && result.business_id
+            // create session for logged in user
+            const session = createSession(object.email, object.name);
+            const accessToken = (0, jwt_utils_1.signJWT)({ payload: result, sessionId: session.sessionId }, '5s');
+            const refreshToken = (0, jwt_utils_1.signJWT)({ sessionId: session.sessionId }, '1y');
+            const decodedToken = (0, jwt_utils_1.verifyJWT)(accessToken, process.env.TOKEN_SECRET).payload;
+            const decodedRefreshToken = (0, jwt_utils_1.verifyJWT)(refreshToken, process.env.TOKEN_SECRET).payload;
+            //  refreshingToken = decodedRefreshToken['payload']['id'] 
+            res.cookie("accessToken", accessToken, {
+                maxAge: 300000,
+                httpOnly: true
             });
+            res.cookie('refreshToken', refreshToken, {
+                maxAge: 3.154e10,
+                httpOnly: true
+            });
+            if (result.role === 'admin') {
+                return res.status(200).json({
+                    message: "Login successful",
+                    accessToken: accessToken,
+                    refreshToken: refreshToken,
+                    name: decodedToken['payload']['name'],
+                    email: decodedToken['payload']['email'],
+                    role: decodedToken['payload']['role'],
+                    id: decodedToken['payload']['id'],
+                    business_id: decodedToken['payload']['business_id'],
+                    session: session
+                });
+            }
+            else {
+                return res.status(200).json({
+                    message: "Login successful",
+                    token: accessToken,
+                    name: decodedToken['payload']['name'],
+                    email: decodedToken['payload']['email'],
+                    role: decodedToken['payload']['role'],
+                    id: decodedToken['payload']['id'],
+                    business_id: decodedToken['payload']['business_id'],
+                    session: session
+                });
+            }
         }
         else {
             return res.status(400).json({ message: "Invalid login credentials" });
         }
     }
     catch (error) {
-        return res.json({ message: error });
+        return res.json({ message: error.message });
     }
 });
 exports.signin = signin;
+// Session handler
+const getSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // @ts-ignore
+        // @ts-ignore
+        return res.send(req.user);
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.getSession = getSession;
+// Logout handler
+const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.cookie("accessToken", "", {
+        maxAge: 0,
+        httpOnly: true
+    });
+    res.cookie("refreshToken", "", {
+        maxAge: 0,
+        httpOnly: true
+    });
+    // @ts-ignore
+    const session = user.invalidateSession(req.user.sessionId);
+    res.send(session);
+});
+exports.logout = logout;
 // Get all users
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

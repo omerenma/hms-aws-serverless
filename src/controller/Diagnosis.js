@@ -5,7 +5,6 @@ const diagnosisVallidation_1 = require("../helpers/diagnosisVallidation");
 const Diagnosis_1 = require("../models/Diagnosis");
 const diagnosis = new Diagnosis_1.DiagnosismentModel();
 const createDiagnosis = async (req, res) => {
-    console.log(req.body);
     try {
         const { bill, date, description, doctor_name, drug_administered, paid, patient_email, patient_status, treatment_name, } = req.body;
         const { error, value } = diagnosisVallidation_1.diagnosisSchema.validate(req.body);

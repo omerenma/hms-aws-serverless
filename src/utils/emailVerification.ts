@@ -3,7 +3,6 @@ import env from 'dotenv'
 env.config()
 
 const sendEmail = async (email:string, subject:string, html:string, EMAIL_SMTP_USER:string) => {
-    console.log(email, subject, html, EMAIL_SMTP_USER)
     try {
         const transporter = nodemailer.createTransport({
             // host:process.env.HOST,
@@ -22,9 +21,8 @@ const sendEmail = async (email:string, subject:string, html:string, EMAIL_SMTP_U
             subject:subject,
             text:html
         })
-        console.log('emial sent successfully')
+        
     } catch (error) {
-        console.log(error)
         return error
     }
 }
