@@ -3,6 +3,7 @@ const serverless = require("serverless-http");
 import dotenv = require("dotenv");
 import cors = require("cors");
 import cookieParser from 'cookie-parser'
+import session from 'express-session'
 import {
   userRoute,
   appointmentRoute,
@@ -25,8 +26,18 @@ const app =  express();
 app.use(express.json());
 app.use(cookieParser())
 
+
 // This deserializeUser middleware function gets called on every request
- app.use(deserializeUser)
+  // app.use(deserializeUser)
+
+app.use(session({
+  secret:process.env.SESSION_SECRET as string,
+  saveUninitialized:true,
+  cookie: {maxAge: 1000 * 60 * 60 * 24},
+  resave:false
+}))
+
+
 
 let corsOptions = {
   origin: ['https://hms-next.vercel.app', 'http://localhost:3000'],

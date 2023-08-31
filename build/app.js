@@ -9,15 +9,21 @@ const serverless = require("serverless-http");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const express_session_1 = __importDefault(require("express-session"));
 const index_1 = require("./routes/index");
 const database_1 = require("./database/database");
-const deserializeUser_1 = __importDefault(require("./middlewares/deserializeUser"));
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use((0, cookie_parser_1.default)());
 // This deserializeUser middleware function gets called on every request
-app.use(deserializeUser_1.default);
+// app.use(deserializeUser)
+app.use((0, express_session_1.default)({
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 },
+    resave: false
+}));
 let corsOptions = {
     origin: ['https://hms-next.vercel.app', 'http://localhost:3000'],
     credentials: true,

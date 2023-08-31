@@ -19,6 +19,7 @@ export const verifyToken = (req: Extended, res: Response, next: NextFunction) =>
             return res.status(401).json({message: 'You are not authorized'})
         }
         jwt.verify(token, process.env.TOKEN_SECRET as string, (err:any, user:any) => {
+            
             if(err){
                 return next({status:403, message:"You are not authorised to view this resource, please login"})
             }else{

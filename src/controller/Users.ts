@@ -2,16 +2,19 @@ import { Request, Response } from "express";
 import { registerSchema, loginSchema } from "../helpers/userValidation";
 import { UsersModel } from "../models/Users";
 import { signJWT, verifyJWT } from "../utils/jwt.utils";
-export const sessions:Record<string, {sessionId:string; email:string; valid:true}>={}
+export const sessions: Record<
+  string,
+  { sessionId: string; email: string; valid: true }
+> = {};
 
-const createSession = (email:string, name:string) => {
+const createSession = (email: string, name: string) => {
   // @ts-ignore
-  const sessionId = Object.keys(sessions).length + 1
-  const session = {sessionId, email, valid:true, name}
-   // @ts-ignore
+  const sessionId = Object.keys(sessions).length + 1;
+  const session = { sessionId, email, valid: true, name };
+  // @ts-ignore
   sessions[sessionId] = session;
-  return session
-}
+  return session;
+};
 const user = new UsersModel();
 // Add new user
 export const signup = async (req: Request, res: Response) => {
@@ -20,20 +23,19 @@ export const signup = async (req: Request, res: Response) => {
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
-    const {business_id, name, email, role, password } = req.body;
-    const data = {business_id, name, email, role, password };
+    const { business_id, name, email, role, password } = req.body;
+    const data = { business_id, name, email, role, password };
     const query = await user.addUser(data);
     return res
       .status(201)
       .json({ message: "New user registered successfully", data: query.name });
-  } catch (error:any) {
-    return res.json({message:error});
+  } catch (error: any) {
+    return res.json({ message: error });
   }
 };
 
 // Signin user
 export const signin = async (req: Request, res: Response) => {
- let refreshingToken = ""
   try {
     const { error, value } = loginSchema.validate(req.body);
     if (error) {
@@ -41,99 +43,101 @@ export const signin = async (req: Request, res: Response) => {
     }
 
     const { email, password } = req.body;
-    
-    const result = await user.login(email, password);
-    const object:any = {
-      email:result.email,
-      name:result.name
-    }
-    
-    if (result) {
 
+    const result = await user.login(email, password);
+    const object: any = {
+      email: result.email,
+      name: result.name,
+    };
+
+    if (result) {
+      let sessions = {};
       // create session for logged in user
-     const session =  createSession(object.email, object.name)
-     const accessToken = signJWT({payload:result, sessionId:session.sessionId},'5s' )
-     const refreshToken = signJWT({sessionId:session.sessionId},'1y' )
+      // const session =  createSession(object.email, object.name)
+      const session = req.session;
+      // @ts-ignore
+      session.userId = object.email;
+      // @ts-ignore
+
+      const accessToken = signJWT({ payload: result, sessionId: session },"15m");
+      const refreshToken = signJWT({ sessionId: session }, "1day");
+      await user.saveToken(refreshToken as string);
+
+      //  const accessToken = signJWT({payload:result, sessionId:session.sessionId},'5s' )
+      //  const refreshToken = signJWT({sessionId:session.sessionId},'1y' )
+
+      const decodedToken: any = verifyJWT(
+        accessToken,
+        process.env.TOKEN_SECRET as string
+      ).payload;
      
 
-     const decodedToken:any = verifyJWT(accessToken, process.env.TOKEN_SECRET as string).payload
-     const decodedRefreshToken:any = verifyJWT(refreshToken, process.env.TOKEN_SECRET as string).payload
+      const date = new Date();
+    date.setHours(date.getHours() + 5);
 
-    //  refreshingToken = decodedRefreshToken['payload']['id'] 
-     res.cookie("accessToken", accessToken, {
-        maxAge:300000, // 5 minutes
-        httpOnly:true
-      })
-
-      res.cookie('refreshToken', refreshToken, {
+      res.cookie("cookie", refreshToken, {
         maxAge: 3.154e10, // 1 years
-        httpOnly:true
+        //  httpOnly: true,
+        secure:true,
+        expires:date,
+        // sameSite:'strict',
       })
-      if(result.role === 'admin'){
-        return res.status(200).json({
-           message: "Login successful",
-          accessToken: accessToken,
-          refreshToken:refreshToken,
-           name: decodedToken['payload']['name'],
-           email: decodedToken['payload']['email'],
-           role: decodedToken['payload']['role'],
-           id:decodedToken['payload']['id'],
-          business_id:decodedToken['payload']['business_id'],
-           session:session
-        });
-      }else{
+
+      if (result.role === "admin") {
         return res.status(200).json({
           message: "Login successful",
-          token: accessToken,
-           name: decodedToken['payload']['name'],
-           email: decodedToken['payload']['email'],
-           role: decodedToken['payload']['role'],
-           id:decodedToken['payload']['id'],
-          business_id:decodedToken['payload']['business_id'],
-          session:session
-
+          accessToken: accessToken,
+          name: decodedToken["payload"]["name"],
+          email: decodedToken["payload"]["email"],
+          role: decodedToken["payload"]["role"],
+          id: decodedToken["payload"]["id"],
+          business_id: decodedToken["payload"]["business_id"],
+          session: session,
+        });
+      } else {
+        return res.status(200).json({
+          message: "Login successful",
+          accessToken: accessToken,
+          name: decodedToken["payload"]["name"],
+          email: decodedToken["payload"]["email"],
+          role: decodedToken["payload"]["role"],
+          id: decodedToken["payload"]["id"],
+          business_id: decodedToken["payload"]["business_id"],
+          session: session,
         });
       }
-     
     } else {
       return res.status(400).json({ message: "Invalid login credentials" });
     }
-  } catch (error:any) {
-    return res.json({message:error.message});
+  } catch (error: any) {
+    return res.json({ message: error.message });
   }
 };
 
 // Session handler
-export const getSession = async(req?:Request, res?:Response) => {
+export const getSession = async (req?: Request, res?: Response) => {
   try {
     // @ts-ignore
     // @ts-ignore
-    return res.send(req.user)
-
-    
+    return res.send(req.user);
   } catch (error) {
-    console.log(error)
-    
+    console.log(error);
   }
-}
+};
 
 // Logout handler
 
- export const logout = async (req:Request, res:Response) => {
-  res.cookie("accessToken", "", {
-    maxAge:0,
-    httpOnly:true
-  })
-
+export const logout = async (req: Request, res: Response) => {
   res.cookie("refreshToken", "", {
-    maxAge:0,
-    httpOnly:true
-  })
+    maxAge: 0,
+    httpOnly: true,
+  });
   // @ts-ignore
- const session = user.invalidateSession(req.user.sessionId)
-  res.send(session)
- }
-
+  //  const session = user.invalidateSession(req.user.sessionId)
+  //   res.send(session)
+  //req.session.destroy();
+  res.send("Logout success");
+};
 
 // Get all users
 export const getUsers = async (req: Request, res: Response) => {
@@ -176,11 +180,11 @@ export const editUser = async (req: Request, res: Response) => {
     const { id, name, email, role } = req.body;
     const result = await user.editUser(id, name, email, role);
     if (result) {
-     return res.status(200).json(result);
+      return res.status(200).json(result);
     } else {
-     return res
-      .status(404)
-      .json({ message: "No user found for the operation" });
+      return res
+        .status(404)
+        .json({ message: "No user found for the operation" });
     }
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
@@ -191,10 +195,26 @@ export const editUser = async (req: Request, res: Response) => {
 export const getDoctors = async (req: Request, res: Response) => {
   try {
     const result = await user.getDoctors();
-    return  res.status(200).json(result);
+    return res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({ message: "Failed to fetch records" });
   }
 };
 
+export const verifyRefreshToken = async (req: Request, res: Response) => {
+  try {
+    const {cookie} = req.cookies
+    if (!cookie) {
+      return res.send("No token");
+    }
 
+    const result = user.verifyRefreshToken(cookie);
+    if(!result){
+      return
+    }
+    const newAccessToken =  signJWT({ payload: result },"1m")
+    return res.json( newAccessToken)
+  } catch (error: any) {
+    return res.json({ message: error.message });
+  }
+};

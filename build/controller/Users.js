@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDoctors = exports.editUser = exports.deleteUser = exports.getUserById = exports.getUsers = exports.logout = exports.getSession = exports.signin = exports.signup = exports.sessions = void 0;
+exports.verifyRefreshToken = exports.getDoctors = exports.editUser = exports.deleteUser = exports.getUserById = exports.getUsers = exports.logout = exports.getSession = exports.signin = exports.signup = exports.sessions = void 0;
 const userValidation_1 = require("../helpers/userValidation");
 const Users_1 = require("../models/Users");
 const jwt_utils_1 = require("../utils/jwt.utils");
@@ -44,7 +44,6 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.signup = signup;
 // Signin user
 const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let refreshingToken = "";
     try {
         const { error, value } = userValidation_1.loginSchema.validate(req.body);
         if (error) {
@@ -54,47 +53,53 @@ const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield user.login(email, password);
         const object = {
             email: result.email,
-            name: result.name
+            name: result.name,
         };
         if (result) {
+            let sessions = {};
             // create session for logged in user
-            const session = createSession(object.email, object.name);
-            const accessToken = (0, jwt_utils_1.signJWT)({ payload: result, sessionId: session.sessionId }, '5s');
-            const refreshToken = (0, jwt_utils_1.signJWT)({ sessionId: session.sessionId }, '1y');
+            // const session =  createSession(object.email, object.name)
+            const session = req.session;
+            // @ts-ignore
+            session.userId = object.email;
+            // @ts-ignore
+            const accessToken = (0, jwt_utils_1.signJWT)({ payload: result, sessionId: session }, "15m");
+            const refreshToken = (0, jwt_utils_1.signJWT)({ sessionId: session }, "1day");
+            yield user.saveToken(refreshToken);
+            //  const accessToken = signJWT({payload:result, sessionId:session.sessionId},'5s' )
+            //  const refreshToken = signJWT({sessionId:session.sessionId},'1y' )
             const decodedToken = (0, jwt_utils_1.verifyJWT)(accessToken, process.env.TOKEN_SECRET).payload;
-            const decodedRefreshToken = (0, jwt_utils_1.verifyJWT)(refreshToken, process.env.TOKEN_SECRET).payload;
-            //  refreshingToken = decodedRefreshToken['payload']['id'] 
-            res.cookie("accessToken", accessToken, {
-                maxAge: 300000,
-                httpOnly: true
-            });
-            res.cookie('refreshToken', refreshToken, {
+            const date = new Date();
+            date.setHours(date.getHours() + 5);
+            res.cookie("cookie", refreshToken, {
                 maxAge: 3.154e10,
-                httpOnly: true
+                //  httpOnly: true,
+                secure: true,
+                expires: date,
+                // sameSite:'strict',
             });
-            if (result.role === 'admin') {
+            if (result.role === "admin") {
                 return res.status(200).json({
                     message: "Login successful",
                     accessToken: accessToken,
-                    refreshToken: refreshToken,
-                    name: decodedToken['payload']['name'],
-                    email: decodedToken['payload']['email'],
-                    role: decodedToken['payload']['role'],
-                    id: decodedToken['payload']['id'],
-                    business_id: decodedToken['payload']['business_id'],
-                    session: session
+                    name: decodedToken["payload"]["name"],
+                    email: decodedToken["payload"]["email"],
+                    role: decodedToken["payload"]["role"],
+                    id: decodedToken["payload"]["id"],
+                    business_id: decodedToken["payload"]["business_id"],
+                    session: session,
                 });
             }
             else {
                 return res.status(200).json({
                     message: "Login successful",
-                    token: accessToken,
-                    name: decodedToken['payload']['name'],
-                    email: decodedToken['payload']['email'],
-                    role: decodedToken['payload']['role'],
-                    id: decodedToken['payload']['id'],
-                    business_id: decodedToken['payload']['business_id'],
-                    session: session
+                    accessToken: accessToken,
+                    name: decodedToken["payload"]["name"],
+                    email: decodedToken["payload"]["email"],
+                    role: decodedToken["payload"]["role"],
+                    id: decodedToken["payload"]["id"],
+                    business_id: decodedToken["payload"]["business_id"],
+                    session: session,
                 });
             }
         }
@@ -121,17 +126,15 @@ const getSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getSession = getSession;
 // Logout handler
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.cookie("accessToken", "", {
-        maxAge: 0,
-        httpOnly: true
-    });
     res.cookie("refreshToken", "", {
         maxAge: 0,
-        httpOnly: true
+        httpOnly: true,
     });
     // @ts-ignore
-    const session = user.invalidateSession(req.user.sessionId);
-    res.send(session);
+    //  const session = user.invalidateSession(req.user.sessionId)
+    //   res.send(session)
+    //req.session.destroy();
+    res.send("Logout success");
 });
 exports.logout = logout;
 // Get all users
@@ -202,3 +205,21 @@ const getDoctors = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getDoctors = getDoctors;
+const verifyRefreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { cookie } = req.cookies;
+        if (!cookie) {
+            return res.send("No token");
+        }
+        const result = user.verifyRefreshToken(cookie);
+        if (!result) {
+            return;
+        }
+        const newAccessToken = (0, jwt_utils_1.signJWT)({ payload: result }, "1m");
+        return res.json(newAccessToken);
+    }
+    catch (error) {
+        return res.json({ message: error.message });
+    }
+});
+exports.verifyRefreshToken = verifyRefreshToken;

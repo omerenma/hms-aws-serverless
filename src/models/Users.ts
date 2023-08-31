@@ -49,6 +49,39 @@ export class UsersModel {
             return error.message
         } 
     }
+    // save refresh token to db after successful login
+    async saveToken (token:string):Promise<[]> {
+       try {
+        const db_connection = await client_dev.connect()
+
+        const sql = 'INSERT INTO tokens (token) VALUES ($1) RETURNING * ';
+        const result = await db_connection.query(sql, [token])
+        return result.rows[0]
+       } catch (error) {
+        // @ts-ignore
+        return error.message
+       }
+
+
+    }
+    // Verify refresh token
+    async verifyRefreshToken (token:string):Promise<[]> {
+       try {
+        const db_connection = await client_dev.connect()
+        const check_token = 'SELECT * FROM tokens where token = ($1)'
+        const query_token = await db_connection.query(check_token, [token])
+
+        if(!query_token){
+            throw new Error('No token was found in the database')
+        }
+        return query_token.rows[0]['token']
+
+        
+       } catch (error) {
+        // @ts-ignore
+        return error.message
+       }
+    }
 
     // Get all users
     async getUsers (): Promise <User[]> {

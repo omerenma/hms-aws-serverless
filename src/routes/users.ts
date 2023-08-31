@@ -8,7 +8,9 @@ import {
   getDoctors,
   getUserById,
   editUser,
-  logout
+  logout,
+  verifyRefreshToken
+
 } from "../controller/Users";
 
 import { verifyToken } from "../middlewares/verifyTokens";
@@ -18,8 +20,9 @@ const router = Router();
 router.post("/register", signup);
 router.post("/signin", signin);
  router.get('/session', requireUser, getSession)
-router.delete('/logout', requireUser,logout)
-router.get("/getusers", requireUser, getUsers);
+ router.get('/token', verifyRefreshToken)
+router.delete('/logout',logout)
+router.get("/getusers", verifyToken, getUsers);
 router.get("/getuser/:id", requireUser, getUserById);
 router.get("/getdoctors", requireUser, getDoctors);
 router.delete("/user/:id", requireUser, deleteUser);

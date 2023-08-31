@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jwt_utils_1 = require("../utils/jwt.utils");
 const dotenv_1 = __importDefault(require("dotenv"));
-const Users_1 = require("../controller/Users");
 dotenv_1.default.config();
 function deserializeUser(req, res, next) {
     const { accessToken, refreshToken } = req.cookies;
@@ -25,11 +24,12 @@ function deserializeUser(req, res, next) {
         return next();
     }
     // @ts-ignore
-    const session = (0, Users_1.getSession)(refresh.sessionId);
+    // const session = getSession(refresh.sessionId)
+    const session = req.session.userId;
     if (!session) {
         return next();
     }
-    const newAccessToken = (0, jwt_utils_1.signJWT)(session, '5s');
+    const newAccessToken = (0, jwt_utils_1.signJWT)(session, '10s');
     res.cookie('accessToken', newAccessToken, {
         maxAge: 300000,
         httpOnly: true

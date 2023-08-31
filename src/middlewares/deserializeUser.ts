@@ -25,11 +25,12 @@ function deserializeUser(req:Request, res:Response, next:NextFunction){
         return next()
     }
     // @ts-ignore
-    const session = getSession(refresh.sessionId)
+    // const session = getSession(refresh.sessionId)
+    const session = req.session.userId
     if(!session){
         return next()
     }  
-    const newAccessToken = signJWT(session, '5s')
+    const newAccessToken = signJWT(session, '10s')
     res.cookie('accessToken', newAccessToken, {
         maxAge:300000,
         httpOnly:true
