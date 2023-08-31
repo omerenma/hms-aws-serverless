@@ -212,7 +212,7 @@ export const verifyRefreshToken = async (req: Request, res: Response) => {
     if(!result){
       return
     }
-    const newAccessToken =  signJWT({ payload: result },"1m")
+    const newAccessToken =  signJWT({ payload: result },"15m")
     return res.json( newAccessToken)
   } catch (error: any) {
     return res.json({ message: error.message });
