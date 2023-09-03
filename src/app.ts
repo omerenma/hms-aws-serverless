@@ -49,7 +49,7 @@ let corsOptions = {
 app.use(cors(corsOptions));
 
 
-client_dev.connect((err) => {
+client.connect((err) => {
   if (err) {
     console.log("Connection error: ", err.message);
     return;
