@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { registerSchema, loginSchema } from "../helpers/userValidation";
 import { UsersModel } from "../models/Users";
 import { signJWT, verifyJWT } from "../utils/jwt.utils";
+import { LogoutModel } from "../models/Logout";
 export const sessions: Record<
   string,
   { sessionId: string; email: string; valid: true }
@@ -16,6 +17,8 @@ const createSession = (email: string, name: string) => {
   return session;
 };
 const user = new UsersModel();
+const logoutUser = new LogoutModel()
+
 // Add new user
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -125,19 +128,6 @@ export const getSession = async (req?: Request, res?: Response) => {
   }
 };
 
-// Logout handler
-
-export const logout = async (req: Request, res: Response) => {
-  res.cookie("refreshToken", "", {
-    maxAge: 0,
-    httpOnly: true,
-  });
-  // @ts-ignore
-  //  const session = user.invalidateSession(req.user.sessionId)
-  //   res.send(session)
-  //req.session.destroy();
-  res.send("Logout success");
-};
 
 // Get all users
 export const getUsers = async (req: Request, res: Response) => {
@@ -217,4 +207,24 @@ export const verifyRefreshToken = async (req: Request, res: Response) => {
   } catch (error: any) {
     return res.json({ message: error.message });
   }
+};
+
+// Logout handler
+
+export const logout = async (req: Request, res: Response) => {
+  const {cookie} = req.cookies
+  await logoutUser.logout(cookie)
+
+   res.cookie("refreshToken", "", {
+     maxAge: 0,
+     httpOnly: true,
+   });
+
+   return res.send("Logout success");
+ 
+  
+  // @ts-ignore
+  //  const session = user.invalidateSession(req.user.sessionId)
+  //   res.send(session)
+  //req.session.destroy();
 };

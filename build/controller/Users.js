@@ -9,10 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyRefreshToken = exports.getDoctors = exports.editUser = exports.deleteUser = exports.getUserById = exports.getUsers = exports.logout = exports.getSession = exports.signin = exports.signup = exports.sessions = void 0;
+exports.logout = exports.verifyRefreshToken = exports.getDoctors = exports.editUser = exports.deleteUser = exports.getUserById = exports.getUsers = exports.getSession = exports.signin = exports.signup = exports.sessions = void 0;
 const userValidation_1 = require("../helpers/userValidation");
 const Users_1 = require("../models/Users");
 const jwt_utils_1 = require("../utils/jwt.utils");
+const Logout_1 = require("../models/Logout");
 exports.sessions = {};
 const createSession = (email, name) => {
     // @ts-ignore
@@ -23,6 +24,7 @@ const createSession = (email, name) => {
     return session;
 };
 const user = new Users_1.UsersModel();
+const logoutUser = new Logout_1.LogoutModel();
 // Add new user
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -124,19 +126,6 @@ const getSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getSession = getSession;
-// Logout handler
-const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.cookie("refreshToken", "", {
-        maxAge: 0,
-        httpOnly: true,
-    });
-    // @ts-ignore
-    //  const session = user.invalidateSession(req.user.sessionId)
-    //   res.send(session)
-    //req.session.destroy();
-    res.send("Logout success");
-});
-exports.logout = logout;
 // Get all users
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -215,7 +204,7 @@ const verifyRefreshToken = (req, res) => __awaiter(void 0, void 0, void 0, funct
         if (!result) {
             return;
         }
-        const newAccessToken = (0, jwt_utils_1.signJWT)({ payload: result }, "1m");
+        const newAccessToken = (0, jwt_utils_1.signJWT)({ payload: result }, "15m");
         return res.json(newAccessToken);
     }
     catch (error) {
@@ -223,3 +212,18 @@ const verifyRefreshToken = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.verifyRefreshToken = verifyRefreshToken;
+// Logout handler
+const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { cookie } = req.cookies;
+    yield logoutUser.logout(cookie);
+    res.cookie("refreshToken", "", {
+        maxAge: 0,
+        httpOnly: true,
+    });
+    return res.send("Logout success");
+    // @ts-ignore
+    //  const session = user.invalidateSession(req.user.sessionId)
+    //   res.send(session)
+    //req.session.destroy();
+});
+exports.logout = logout;
