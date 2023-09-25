@@ -19,6 +19,7 @@ import {
 } from "./routes/index";
 import { client, client_dev } from "./database/database";
 import deserializeUser from "./middlewares/deserializeUser"
+import { logger } from "./utils/logger";
 dotenv.config();
 
 const app =  express();
@@ -49,7 +50,7 @@ let corsOptions = {
 app.use(cors(corsOptions));
 
 
-client.connect((err) => {
+client_dev.connect((err) => {
   if (err) {
     console.log("Connection error: ", err.message);
     return;

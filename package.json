@@ -55,7 +55,8 @@
     "serverless": "^3.32.2",
     "serverless-http": "^3.2.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",

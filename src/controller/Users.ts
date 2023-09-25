@@ -3,6 +3,8 @@ import { registerSchema, loginSchema } from "../helpers/userValidation";
 import { UsersModel } from "../models/Users";
 import { signJWT, verifyJWT } from "../utils/jwt.utils";
 import { LogoutModel } from "../models/Logout";
+import { logger } from "../utils/logger";
+import { formatLoggerResponse } from "../utils/FormatLoggerResponse";
 export const sessions: Record<
   string,
   { sessionId: string; email: string; valid: true }
@@ -62,7 +64,7 @@ export const signin = async (req: Request, res: Response) => {
       session.userId = object.email;
       // @ts-ignore
 
-      const accessToken = signJWT({ payload: result, sessionId: session },"15m");
+      const accessToken = signJWT({ payload: result, sessionId: session },"15 minute");
       const refreshToken = signJWT({ sessionId: session }, "1day");
       await user.saveToken(refreshToken as string);
 
@@ -87,6 +89,7 @@ export const signin = async (req: Request, res: Response) => {
       })
 
       if (result.role === "admin") {
+        logger.info('Success message', formatLoggerResponse(req, res, {result}))
         return res.status(200).json({
           message: "Login successful",
           accessToken: accessToken,
@@ -98,6 +101,8 @@ export const signin = async (req: Request, res: Response) => {
           session: session,
         });
       } else {
+        logger.info('Success message', formatLoggerResponse(req, res, {result}))
+
         return res.status(200).json({
           message: "Login successful",
           accessToken: accessToken,
@@ -113,6 +118,7 @@ export const signin = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid login credentials" });
     }
   } catch (error: any) {
+    logger.error('Failure message', formatLoggerResponse(req, res, {message: error.response}))
     return res.json({ message: error.message });
   }
 };

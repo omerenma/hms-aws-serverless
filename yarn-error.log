@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\HP\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @aws-sdk/client-comprehendmedicalcls
+  C:\Program Files\nodejs\node.exe C:\Users\HP\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add wiston
 
 PATH: 
   C:\Program Files\Microsoft\jdk-11.0.18.10-hotspot\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\HP\Common\HPDestPlgIn\;C:\Program Files (x86)\HP\Common\HPDestPlgIn\;C:\Program Files (x86)\HP\IdrsOCR_15.5.1219.0\;C:\Program Files\HP\IdrsOCR_15.5.1219.0\;C:\HashiCorp\Vagrant\bin;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files (x86)\gnupg\bin;C:\copilot;C:\Program Files\PuTTY\;C:\Users\HP\AppData\Local\Microsoft\WindowsApps;C:\Program Files\HP\Common\HPDestPlgIn\;C:\Program Files (x86)\HP\Common\HPDestPlgIn\;C:\Program Files\nodejs;C:\Users\HP\AppData\Roaming\npm;C:\Users\HP\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\PostgreSQL\15\bin;C:\Program Files\PostgreSQL\15\data;C:\Users\HP\AppData\Local\Programs\Microsoft VS Code\bin;C:\copilot;
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@aws-sdk%2fclient-comprehendmedicalcls: Not found
+  Error: https://registry.yarnpkg.com/wiston: Not found
       at params.callback [as _callback] (C:\Users\HP\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66145:18)
       at self.callback (C:\Users\HP\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140890:22)
       at Request.emit (node:events:513:28)
@@ -52,11 +52,13 @@ npm manifest:
       "@types/cookie": "^0.5.1",
       "@types/cookie-parser": "^1.4.3",
       "@types/dotenv": "^8.2.0",
+      "@types/express-session": "^1.17.7",
       "@types/joi": "^17.2.3",
       "@types/jsonwebtoken": "^9.0.1",
       "@types/node-fetch": "^2.6.4",
       "@types/pg": "^8.6.6",
       "all": "^0.0.0",
+      "aws-sdk": "^2.1445.0",
       "axios": "^1.3.4",
       "bcryptjs": "^2.4.3",
       "body-parser": "^1.20.2",
@@ -67,6 +69,7 @@ npm manifest:
       "db-migrate-pg": "^1.2.2",
       "dotenv": "^16.0.3",
       "express": "^4.18.2",
+      "express-session": "^1.17.3",
       "joi": "^17.9.1",
       "jsonwebtoken": "^9.0.0",
       "mysql2": "^3.3.3",
@@ -1160,6 +1163,13 @@ Lockfile:
       "@types/qs" "*"
       "@types/range-parser" "*"
   
+  "@types/express-session@^1.17.7":
+    version "1.17.7"
+    resolved "https://registry.yarnpkg.com/@types/express-session/-/express-session-1.17.7.tgz#ced215c1244cb594be10e39f2781ddcd650be9a6"
+    integrity sha512-L25080PBYoRLu472HY/HNCxaXY8AaGgqGC8/p/8+BYMhG0RDOLQ1wpXOpAzr4Gi5TGozTKyJv5BVODM5UNyVMw==
+    dependencies:
+      "@types/express" "*"
+  
   "@types/express@*", "@types/express@^4.17.17":
     version "4.17.17"
     resolved "https://registry.npmjs.org/@types/express/-/express-4.17.17.tgz"
@@ -1460,6 +1470,22 @@ Lockfile:
     version "2.1410.0"
     resolved "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.1410.0.tgz"
     integrity sha512-EKC7DxVknwVKdZg7yRnH01UM3+K3H4SGfdM1GJ1lgHrWAdgEsMIzYDFceoFT+E7qIg5YHXgpKfpzDEKsI3p8wQ==
+    dependencies:
+      buffer "4.9.2"
+      events "1.1.1"
+      ieee754 "1.1.13"
+      jmespath "0.16.0"
+      querystring "0.2.0"
+      sax "1.2.1"
+      url "0.10.3"
+      util "^0.12.4"
+      uuid "8.0.0"
+      xml2js "0.5.0"
+  
+  aws-sdk@^2.1445.0:
+    version "2.1445.0"
+    resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1445.0.tgz#02c4ab824b19b2716858fc5041a322e1951a68ea"
+    integrity sha512-/IYUYE79khfguHsb28fQtXKR/avgkhCa6NNOh6W84xEyc89hLTvF30VlvaYaHFlIQeDmylO9kJfjSqGrEVDPIg==
     dependencies:
       buffer "4.9.2"
       events "1.1.1"
@@ -1927,6 +1953,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.1.tgz#afd713fe26ebd21ba95ceb61f9a8116e50a537d1"
     integrity sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==
   
+  cookie@0.4.2:
+    version "0.4.2"
+    resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.2.tgz#0e41f24de5ecf317947c82fc789e06a884824432"
+    integrity sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==
+  
   cookie@0.5.0, cookie@^0.5.0:
     version "0.5.0"
     resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.5.0.tgz#d1f5d71adec6558c58f389987c366aa47e994f8b"
@@ -2185,7 +2216,7 @@ Lockfile:
     resolved "https://registry.npmjs.org/denque/-/denque-2.1.0.tgz"
     integrity sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==
   
-  depd@2.0.0:
+  depd@2.0.0, depd@~2.0.0:
     version "2.0.0"
     resolved "https://registry.npmjs.org/depd/-/depd-2.0.0.tgz"
     integrity sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
@@ -2385,6 +2416,20 @@ Lockfile:
     version "1.1.1"
     resolved "https://registry.npmjs.org/events/-/events-1.1.1.tgz"
     integrity sha512-kEcvvCBByWXGnZy6JUlgAp2gBIUjfCAV6P6TgT1/aaQKcmuAEC4OZTV1I4EWQLz2gxZw76atuVyvHhTxvi0Flw==
+  
+  express-session@^1.17.3:
+    version "1.17.3"
+    resolved "https://registry.yarnpkg.com/express-session/-/express-session-1.17.3.tgz#14b997a15ed43e5949cb1d073725675dd2777f36"
+    integrity sha512-4+otWXlShYlG1Ma+2Jnn+xgKUZTMJ5QD3YvfilX3AcocOAbIkVylSWEklzALe/+Pu4qV6TYBj5GwOBFfdKqLBw==
+    dependencies:
+      cookie "0.4.2"
+      cookie-signature "1.0.6"
+      debug "2.6.9"
+      depd "~2.0.0"
+      on-headers "~1.0.2"
+      parseurl "~1.3.3"
+      safe-buffer "5.2.1"
+      uid-safe "~2.1.5"
   
   express@^4.18.2:
     version "4.18.2"
@@ -3741,6 +3786,11 @@ Lockfile:
     dependencies:
       ee-first "1.1.1"
   
+  on-headers@~1.0.2:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/on-headers/-/on-headers-1.0.2.tgz#772b0ae6aaa525c399e489adfad90c403eb3c28f"
+    integrity sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==
+  
   once@^1.3.0, once@^1.3.1, once@^1.4.0:
     version "1.4.0"
     resolved "https://registry.npmjs.org/once/-/once-1.4.0.tgz"
@@ -4134,6 +4184,11 @@ Lockfile:
     version "5.1.1"
     resolved "https://registry.npmjs.org/quick-lru/-/quick-lru-5.1.1.tgz"
     integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
+  
+  random-bytes@~1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/random-bytes/-/random-bytes-1.0.0.tgz#4f68a1dc0ae58bd3fb95848c30324db75d64360b"
+    integrity sha512-iv7LhNVO047HzYR3InF6pUcUsPQiHTM1Qal51DcGSuZFBil1aBBWG5eHPNek7bvILMaYJ/8RU1e8w1AMdHmLQQ==
   
   range-parser@~1.2.1:
     version "1.2.1"
@@ -4972,6 +5027,13 @@ Lockfile:
     version "5.0.4"
     resolved "https://registry.npmjs.org/typescript/-/typescript-5.0.4.tgz"
     integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
+  
+  uid-safe@~2.1.5:
+    version "2.1.5"
+    resolved "https://registry.yarnpkg.com/uid-safe/-/uid-safe-2.1.5.tgz#2b3d5c7240e8fc2e58f8aa269e5ee49c0857bd3a"
+    integrity sha512-KPHm4VL5dDXKz01UuEd88Df+KzynaohSL9fBh096KWAxSKZQDI2uBrVqtvRM4rwrIrRRKsdLNML/lnaaVSRioA==
+    dependencies:
+      random-bytes "~1.0.0"
   
   unbzip2-stream@^1.0.9:
     version "1.4.3"
