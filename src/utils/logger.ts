@@ -34,12 +34,16 @@ export const logger = winston.createLogger({
     ),
     transports: [
         new winston.transports.Console()
-    ]
+    ],
+
     
 })
 
 if(process.env.NODE_ENV !== 'production'){
+    console.log('production')
     logger.add(new winston.transports.Console({
         format: winston.format.simple()
     }))
+}else{
+    console.log('development')
 }

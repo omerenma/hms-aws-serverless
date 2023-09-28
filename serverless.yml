@@ -1,4 +1,4 @@
-service: hms-api
+service: hms-apis
 frameworkVersion: "3"
 
 provider:
@@ -7,7 +7,7 @@ provider:
   memorySize: 2048
   stage: dev
   timeout: 15
-  region: af-south-1
+  region: us-east-1
 
 functions:
   app:

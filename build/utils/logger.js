@@ -40,10 +40,14 @@ exports.logger = winston_1.default.createLogger({
     })),
     transports: [
         new winston_1.default.transports.Console()
-    ]
+    ],
 });
 if (process.env.NODE_ENV !== 'production') {
+    console.log('production');
     exports.logger.add(new winston_1.default.transports.Console({
         format: winston_1.default.format.simple()
     }));
+}
+else {
+    console.log('development');
 }

@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import { redactLogData } from "./redactLogData"
 
 
 export const formatLoggerResponse = (req:Request, res:Response, responseBody:any) => {
@@ -8,7 +9,7 @@ export const formatLoggerResponse = (req:Request, res:Response, responseBody:any
             host: req.headers.host,
             baseUrl: req.baseUrl,
             method: req.method,
-            body:req.body,
+            body: redactLogData(req.body),
             params:req?.params,
             query: req?.query,
             // clientIp: req?.header[HTTPHeaders.Forwarded] ?? req?.socket.remoteAddress
@@ -18,7 +19,8 @@ export const formatLoggerResponse = (req:Request, res:Response, responseBody:any
         response: {
             headers: res.getHeaders(),
             statusCode:res.statusCode,
-            body: responseBody
+            body: redactLogData(responseBody),
+            cookie:redactLogData(res.cookie)
         }
 
     }

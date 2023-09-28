@@ -14,8 +14,6 @@ const userValidation_1 = require("../helpers/userValidation");
 const Users_1 = require("../models/Users");
 const jwt_utils_1 = require("../utils/jwt.utils");
 const Logout_1 = require("../models/Logout");
-const logger_1 = require("../utils/logger");
-const FormatLoggerResponse_1 = require("../utils/FormatLoggerResponse");
 exports.sessions = {};
 const createSession = (email, name) => {
     // @ts-ignore
@@ -83,7 +81,6 @@ const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 // sameSite:'strict',
             });
             if (result.role === "admin") {
-                logger_1.logger.info('Success message', (0, FormatLoggerResponse_1.formatLoggerResponse)(req, res, { result }));
                 return res.status(200).json({
                     message: "Login successful",
                     accessToken: accessToken,
@@ -96,7 +93,6 @@ const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 });
             }
             else {
-                logger_1.logger.info('Success message', (0, FormatLoggerResponse_1.formatLoggerResponse)(req, res, { result }));
                 return res.status(200).json({
                     message: "Login successful",
                     accessToken: accessToken,
@@ -114,7 +110,6 @@ const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
     catch (error) {
-        logger_1.logger.error('Failure message', (0, FormatLoggerResponse_1.formatLoggerResponse)(req, res, { message: error.response }));
         return res.json({ message: error.message });
     }
 });

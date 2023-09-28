@@ -89,7 +89,6 @@ export const signin = async (req: Request, res: Response) => {
       })
 
       if (result.role === "admin") {
-        logger.info('Success message', formatLoggerResponse(req, res, {result}))
         return res.status(200).json({
           message: "Login successful",
           accessToken: accessToken,
@@ -101,8 +100,6 @@ export const signin = async (req: Request, res: Response) => {
           session: session,
         });
       } else {
-        logger.info('Success message', formatLoggerResponse(req, res, {result}))
-
         return res.status(200).json({
           message: "Login successful",
           accessToken: accessToken,
@@ -118,7 +115,6 @@ export const signin = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid login credentials" });
     }
   } catch (error: any) {
-    logger.error('Failure message', formatLoggerResponse(req, res, {message: error.response}))
     return res.json({ message: error.message });
   }
 };

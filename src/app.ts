@@ -19,7 +19,7 @@ import {
 } from "./routes/index";
 import { client, client_dev } from "./database/database";
 import deserializeUser from "./middlewares/deserializeUser"
-import { logger } from "./utils/logger";
+import { responseInterceptor } from "./utils/responseInterceptor";
 dotenv.config();
 
 const app =  express();
@@ -62,6 +62,8 @@ client_dev.connect((err) => {
 app.get("/hello", (req: express.Request, res: express.Response) => {
   res.send("Hello Elastic Bean Stalk");
 });
+
+app.use(responseInterceptor)
 
 app.use('/subscription',  paystack)
 
