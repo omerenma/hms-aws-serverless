@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handler = void 0;
 const express = require("express");
+require('winston-loggly-bulk');
 const serverless = require("serverless-http");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -12,7 +13,6 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const express_session_1 = __importDefault(require("express-session"));
 const index_1 = require("./routes/index");
 const database_1 = require("./database/database");
-const responseInterceptor_1 = require("./utils/responseInterceptor");
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -43,7 +43,7 @@ database_1.client_dev.connect((err) => {
 app.get("/hello", (req, res) => {
     res.send("Hello Elastic Bean Stalk");
 });
-app.use(responseInterceptor_1.responseInterceptor);
+//  app.use(responseInterceptor)
 app.use('/subscription', index_1.paystack);
 app.use("/users", index_1.userRoute);
 app.use("/appointment", index_1.appointmentRoute);

@@ -1,4 +1,7 @@
 import express = require("express");
+import expressWinston from 'express-winston'
+require('winston-loggly-bulk')
+import winston from 'winston'
 const serverless = require("serverless-http");
 import dotenv = require("dotenv");
 import cors = require("cors");
@@ -63,7 +66,9 @@ app.get("/hello", (req: express.Request, res: express.Response) => {
   res.send("Hello Elastic Bean Stalk");
 });
 
-app.use(responseInterceptor)
+//  app.use(responseInterceptor)
+
+
 
 app.use('/subscription',  paystack)
 

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPatientsById = exports.getPatients = exports.editPatient = exports.deletPatient = exports.createPatient = void 0;
+exports.deletePatientsById = exports.getPatientsById = exports.getPatients = exports.editPatient = exports.deletePatient = exports.createPatient = void 0;
 const Patient_1 = require("../models/Patient");
 const patientValidation_1 = require("../helpers/patientValidation");
 const patient = new Patient_1.PatientModel();
@@ -30,27 +30,30 @@ const createPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.createPatient = createPatient;
 // Delete Patient
-const deletPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const deletePatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
         const result = yield patient.deletePatient(id);
-        return res
-            .status(201)
+        console.log('result delete', result);
+        res
+            .status(200)
             .json({ message: "Patient deleted successfully", data: result });
     }
     catch (error) {
-        return res.status(500).json({ message: "Something went wrong" });
+        res.status(500).json({ message: "Something went wrong" });
     }
 });
-exports.deletPatient = deletPatient;
+exports.deletePatient = deletePatient;
 // Edit Patient
 const editPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { status, } = req.body;
-        const data = { id, status };
+        const { name, dob, sex, residential_address, email, phone_no, next_of_kin_name, next_of_kin_phone } = req.body;
+        const data = { name, sex, dob, residential_address, email, phone_no, next_of_kin_name, next_of_kin_phone, id };
         const result = yield patient.editPatient(data);
-        return res.status(200).json({ message: "Record updated successfully", data: result });
+        if (result) {
+            return res.status(200).json({ message: "Record updated successfully", data: result });
+        }
     }
     catch (error) {
         return res.status(500).json({ message: "Something went wrong" });
@@ -71,10 +74,21 @@ const getPatientsById = (req, res) => __awaiter(void 0, void 0, void 0, function
     try {
         const { id } = req.params;
         const result = yield patient.getPatientsById(id);
-        return res.status(200).json({ data: result });
+        return res.status(200).json(result);
     }
     catch (error) {
         return res.status(500).json({ error });
     }
 });
 exports.getPatientsById = getPatientsById;
+const deletePatientsById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const result = yield patient.deletePatient(id);
+        return res.status(200).json(result);
+    }
+    catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+exports.deletePatientsById = deletePatientsById;

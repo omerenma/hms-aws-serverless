@@ -22,15 +22,15 @@ export const createPatient = async (req: Request, res: Response) => {
 };
 
 // Delete Patient
-export const deletPatient = async (req: Request, res: Response) => {
+export const deletePatient = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const result = await patient.deletePatient(id);
-    return res
-      .status(201)
+     res
+      .status(200)
       .json({ message: "Patient deleted successfully", data: result });
   } catch (error) {
-    return res.status(500).json({ message: "Something went wrong" });
+     res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -38,12 +38,12 @@ export const deletPatient = async (req: Request, res: Response) => {
 export const editPatient = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const {
-      status,
-    } = req.body;
-    const data = {id, status};
+    const { name, dob,sex,residential_address ,email,phone_no,next_of_kin_name,next_of_kin_phone} = req.body;
+    const data = {name,sex,dob,residential_address ,email, phone_no,next_of_kin_name,next_of_kin_phone, id} 
     const result = await patient.editPatient(data);
-    return res.status(200).json({message:"Record updated successfully", data: result });
+    if(result){
+      return res.status(200).json({message:"Record updated successfully", data: result });
+    }
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
   }
@@ -62,7 +62,18 @@ export const getPatientsById = async (req:Request, res:Response) => {
   try {
     const {id} = req.params
       const result = await patient.getPatientsById(id)
-      return  res.status(200).json({data:result})
+      return  res.status(200).json(result)
+  } catch (error) {
+      return res.status(500).json({error})
+  }
+}
+
+
+export const deletePatientsById = async (req:Request, res:Response) => {
+  try {
+    const {id} = req.params
+      const result = await patient.deletePatient(id)
+      return  res.status(200).json(result)
   } catch (error) {
       return res.status(500).json({error})
   }
