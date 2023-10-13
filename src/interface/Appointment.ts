@@ -1,7 +1,8 @@
 export interface Appointment {
     id?:string,
-    patients_id:string,
+    patient_id:string,
     doctor_id:string,
     appointment_date:string,
     issent?:number
+    business_id:any
 }

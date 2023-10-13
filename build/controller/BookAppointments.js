@@ -22,7 +22,7 @@ const createAppointment = (req, res) => __awaiter(void 0, void 0, void 0, functi
         }
         const data = { patient_id, doctor_id, appointment_date };
         const query = yield appointment.booAppointment(data);
-        return res.status(201).json({ message: `An appointment has been scheduled for ${data.doctor_id} and ${data.patient_id} `, data: query });
+        return res.status(201).json({ message: `An appointment has been scheduled for ${JSON.parse(data.doctor_id)} and ${data.patient_id} `, data: query });
     }
     catch (error) {
         return res.status(500).json({ message: "Something went wrong" });

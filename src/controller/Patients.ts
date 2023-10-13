@@ -10,9 +10,9 @@ export const createPatient = async (req: Request, res: Response) => {
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
-    const { name, dob,sex,residential_address ,email,phone_no,next_of_kin_name,next_of_kin_phone} = req.body;
+    const {  patient_name, dob,patient_sex,residential_address ,patient_email,patient_phone_no,next_of_kin_name,next_of_kin_phone} = req.body;
    
-    const data = {name,dob,sex,email,residential_address ,phone_no,next_of_kin_name,next_of_kin_phone,} 
+    const data = {patient_name,dob,patient_sex,patient_email,residential_address ,patient_phone_no,next_of_kin_name,next_of_kin_phone,} 
 
     const result = await patient.addPatient(data);
     return res.status(201).json({ message: "Patient added successfully", data: result });
@@ -38,8 +38,8 @@ export const deletePatient = async (req: Request, res: Response) => {
 export const editPatient = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, dob,sex,residential_address ,email,phone_no,next_of_kin_name,next_of_kin_phone} = req.body;
-    const data = {name,sex,dob,residential_address ,email, phone_no,next_of_kin_name,next_of_kin_phone, id} 
+    const { patient_name, dob,patient_sex,residential_address ,patient_email,patient_phone_no,next_of_kin_name,next_of_kin_phone} = req.body;
+    const data = {patient_name,patient_sex,dob,residential_address ,patient_email, patient_phone_no,next_of_kin_name,next_of_kin_phone, id} 
     const result = await patient.editPatient(data);
     if(result){
       return res.status(200).json({message:"Record updated successfully", data: result });

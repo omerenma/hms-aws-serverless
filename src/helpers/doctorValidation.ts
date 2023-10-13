@@ -1,7 +1,8 @@
 const joi = require('joi')
 export const createDocotrSchema = joi.object(
     {
-        //name:joi.string().required(),
+        name:joi.string().required(),
+        business_id:joi.string().required(),
         email: joi.string().email().exist().required(),
         sex: joi.string().required(),
         dob:joi.string().required(),

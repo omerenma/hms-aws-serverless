@@ -11,7 +11,7 @@ export class BookAppointmentModel {
         try {
                 const db_connection = await client_dev.connect()
                 const sql = 'INSERT INTO book_appointments (patient_id, doctor_id, appointment_date) VALUES ($1, $2, $3) RETURNING * ';
-                const result =  await db_connection.query(sql, [ user.patient_id, user.doctor_id, user.appointment_date ])
+                const result =  await db_connection.query(sql, [ user.patient_id, JSON.parse(user.doctor_id), user.appointment_date ])
                 const response =  result
                  return response.rows[0]
             
@@ -33,7 +33,7 @@ export class BookAppointmentModel {
         }
     }
 
-    async getAppointmentByDoctorId(id:string):Promise<{}> {
+    async getAppointmentByDoctorId(id:any):Promise<{}> {
         try {
             const db_connection = await client_dev.connect()
             const sql = "SELECT * FROM book_appointments JOIN patients ON patients_id=patient_id JOIN doctors ON id_doctor=doctor_id WHERE id_doctor = ($1)";

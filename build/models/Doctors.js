@@ -26,18 +26,19 @@ class DoctorModel {
                     throw new Error(`Doctor with email: ${data.email},  already exist.`);
                 }
                 else {
-                    const sql = 'INSERT INTO doctors (id_doctor, name, email, sex, phone_no, dob, specialty) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING * ';
+                    const sql = 'INSERT INTO doctors (id, name, email, sex, phone_no, dob, specialty, business_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING * ';
                     doctor_data.map(item => {
                         const datas = {
-                            id_doctor: item.id,
+                            id: item.id,
                             name: item.name,
                             email: item.email,
                             sex: data.sex,
                             dob: data.dob,
                             phone_no: data.phone_no,
-                            specialty: data.specialty
+                            specialty: data.specialty,
+                            business_id: data.business_id
                         };
-                        const result = db_connection.query(sql, [datas.id_doctor, datas.name, datas.email, datas.sex, datas.phone_no, datas.dob, datas.specialty]);
+                        const result = db_connection.query(sql, [datas.id, datas.name, datas.email, datas.sex, datas.phone_no, datas.dob, datas.specialty, datas.business_id]);
                         const response = result;
                         return response;
                     });

@@ -4,7 +4,7 @@ import { verifyToken } from '../middlewares/verifyTokens'
 
 const router = Router()
 
-router.post('/add', verifyToken,  createAdmission)
-router.get('/get',verifyToken, getAdmission)
+router.post('/add',   createAdmission)
+router.get('/get',getAdmission)
 
 export default router

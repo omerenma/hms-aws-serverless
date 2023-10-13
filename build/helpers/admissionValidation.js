@@ -6,5 +6,6 @@ exports.admissionSchema = joi.object({
     patients_id: joi.string().required(),
     admission_date: joi.string().required(),
     admission_room_number: joi.string().required(),
-    ailment: joi.string().required()
+    ailment: joi.string().required(),
+    business_id: joi.string().required()
 });

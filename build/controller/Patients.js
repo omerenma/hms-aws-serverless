@@ -19,8 +19,8 @@ const createPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (error) {
             return res.status(400).json({ message: error.details[0].message });
         }
-        const { name, dob, sex, residential_address, email, phone_no, next_of_kin_name, next_of_kin_phone } = req.body;
-        const data = { name, dob, sex, email, residential_address, phone_no, next_of_kin_name, next_of_kin_phone, };
+        const { patient_name, dob, patient_sex, residential_address, patient_email, patient_phone_no, next_of_kin_name, next_of_kin_phone } = req.body;
+        const data = { patient_name, dob, patient_sex, patient_email, residential_address, patient_phone_no, next_of_kin_name, next_of_kin_phone, };
         const result = yield patient.addPatient(data);
         return res.status(201).json({ message: "Patient added successfully", data: result });
     }
@@ -34,7 +34,6 @@ const deletePatient = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const { id } = req.params;
         const result = yield patient.deletePatient(id);
-        console.log('result delete', result);
         res
             .status(200)
             .json({ message: "Patient deleted successfully", data: result });
@@ -48,8 +47,8 @@ exports.deletePatient = deletePatient;
 const editPatient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { name, dob, sex, residential_address, email, phone_no, next_of_kin_name, next_of_kin_phone } = req.body;
-        const data = { name, sex, dob, residential_address, email, phone_no, next_of_kin_name, next_of_kin_phone, id };
+        const { patient_name, dob, patient_sex, residential_address, patient_email, patient_phone_no, next_of_kin_name, next_of_kin_phone } = req.body;
+        const data = { patient_name, patient_sex, dob, residential_address, patient_email, patient_phone_no, next_of_kin_name, next_of_kin_phone, id };
         const result = yield patient.editPatient(data);
         if (result) {
             return res.status(200).json({ message: "Record updated successfully", data: result });

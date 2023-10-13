@@ -9,15 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdmissionModel = void 0;
+exports.DoctorRemarkModel = void 0;
 const database_1 = require("../database/database");
-class AdmissionModel {
-    createAdmission(data) {
+class DoctorRemarkModel {
+    addEnquiry(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db_connection = yield database_1.client_dev.connect();
-                const sql = 'INSERT INTO admissions (patients_id , admission_date, admission_room_number, ailment, business_id ) VALUES ($1, $2, $3, $4, $5) RETURNING * ';
-                const result = yield db_connection.query(sql, [data.patients_id, data.admission_date, data.admission_room_number, data.ailment, data.business_id]);
+                const sql = 'INSERT INTO doctorremarks (doctor_id,name, email, phone_no, message) VALUES ($1, $2, $3, $4, $5) RETURNING * ';
+                const result = yield db_connection.query(sql, [data.doctor_id, data.name, data.email, data.phone_no, data.message]);
                 const response = result;
                 return response.rows[0];
             }
@@ -26,19 +26,5 @@ class AdmissionModel {
             }
         });
     }
-    getAdmission() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const db_connection = yield database_1.client_dev.connect();
-                const sql = "select * from admissions join patients on patients.id = admissions.patients_id";
-                const result = yield db_connection.query(sql);
-                const response = result;
-                return response.rows;
-            }
-            catch (error) {
-                return error;
-            }
-        });
-    }
 }
-exports.AdmissionModel = AdmissionModel;
+exports.DoctorRemarkModel = DoctorRemarkModel;

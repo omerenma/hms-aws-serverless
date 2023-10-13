@@ -54,6 +54,7 @@ app.use("/doctors", index_1.doctorRoute);
 app.use("/book_appointments", index_1.bookAppointment);
 app.use('/business', index_1.businnes);
 app.use('/enquiry', index_1.enquiry);
+app.use('/adddoctorremark', index_1.addDoctorRemark);
 app.use('/comprehend-mdeical', index_1.comprehendMedical);
 app.all("*", (req, res) => {
     res.status(404).send("Page Not Found");

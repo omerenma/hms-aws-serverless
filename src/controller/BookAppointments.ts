@@ -11,9 +11,10 @@ export const createAppointment = async (req:Request, res:Response) => {
         if (error) {
           return res.status(400).json({ message: error.details[0].message });
         }
-        const data = { patient_id, doctor_id, appointment_date};
+
+        const data = { patient_id,  doctor_id, appointment_date};
         const query = await appointment.booAppointment(data);
-       return res.status(201).json({ message: `An appointment has been scheduled for ${data.doctor_id} and ${data.patient_id} `, data: query });
+       return res.status(201).json({ message: `An appointment has been scheduled for ${JSON.parse(data.doctor_id)} and ${data.patient_id} `, data: query });
       } catch (error) {
         return res.status(500).json({ message: "Something went wrong" });
       }

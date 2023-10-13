@@ -18,7 +18,8 @@ import {
   paystack,
   businnes,
   enquiry,
-  comprehendMedical
+  comprehendMedical,
+  addDoctorRemark
 } from "./routes/index";
 import { client, client_dev } from "./database/database";
 import deserializeUser from "./middlewares/deserializeUser"
@@ -81,6 +82,7 @@ app.use("/doctors", doctorRoute);
 app.use("/book_appointments", bookAppointment);
 app.use('/business', businnes)
 app.use('/enquiry', enquiry)
+app.use('/adddoctorremark', addDoctorRemark)
 app.use('/comprehend-mdeical', comprehendMedical)
 app.all("*", (req: express.Request, res: express.Response) => {
   res.status(404).send("Page Not Found");

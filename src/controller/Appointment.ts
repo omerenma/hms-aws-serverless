@@ -5,14 +5,15 @@ import { AppointmentModel } from '../models/Appointment';
 export const createAppointment = async (req:Request, res:Response) => {
   const appointment = new AppointmentModel()
     try {
-        const { patients_id, doctor_id, appointment_date, } = req.body;
+        const { patient_id, doctor_id, appointment_date, business_id} = req.body;
         const { error, value } = appointmentSchema.validate(req.body);
         if (error) {
           return res.status(400).json({ message: error.details[0].message });
         }
-        const data = { patients_id, doctor_id, appointment_date};
+        const data = { patient_id, doctor_id, appointment_date, business_id};
         const query = await appointment.addAppointment(data);
-        return res.status(201).json({ message: `An appointment has been scheduled with ${data.doctor_id} and ${data.patients_id} `, data: query });
+
+        return res.status(201).json({ message: `An appointment has been scheduled with ${data.doctor_id} and ${data.patient_id} `, data: query });
       } catch (error:any) {
         return res.status(500).json({ message: "Something went wrong...", error });
       }
@@ -29,7 +30,7 @@ export const getAppointment = async (_req:Request, res:Response) => {
 
 }
 
-export const getDoctorAppointment = async (req:Request, res:Response) => {
+export const getDoctorAppointmentById = async (req:Request, res:Response) => {
   const appointment = new AppointmentModel()
   try {
     const id = req.params.id

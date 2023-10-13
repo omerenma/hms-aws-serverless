@@ -4,6 +4,7 @@ export interface Admission {
     admission_date:string;
     admission_room_number:string;
     ailment:string
+    business_id:any
 }
 
 export interface GetAdmission {

@@ -4,7 +4,7 @@ import { verifyToken } from '../middlewares/verifyTokens'
 
 const router = Router()
 
-router.post('/book', verifyToken, createAppointment)
-router.get('/getappointments', verifyToken, getAppointments)
-router.get('/getappointments/:id', verifyToken, getAppointmentByDoctorId)
+router.post('/book',  createAppointment)
+router.get('/getappointments', getAppointments)
+router.get('/getappointments/:id',  getAppointmentByDoctorId)
 export default router

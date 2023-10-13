@@ -17,7 +17,7 @@ class BookAppointmentModel {
             try {
                 const db_connection = yield database_1.client_dev.connect();
                 const sql = 'INSERT INTO book_appointments (patient_id, doctor_id, appointment_date) VALUES ($1, $2, $3) RETURNING * ';
-                const result = yield db_connection.query(sql, [user.patient_id, user.doctor_id, user.appointment_date]);
+                const result = yield db_connection.query(sql, [user.patient_id, JSON.parse(user.doctor_id), user.appointment_date]);
                 const response = result;
                 return response.rows[0];
             }

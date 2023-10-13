@@ -4,10 +4,10 @@ import { verifyToken } from '../middlewares/verifyTokens'
 
 const router = Router()
 
-router.post('/add', verifyToken, createDoctor)
-router.get('/get', verifyToken,  getDoctors)
-router.get('/get/:id',verifyToken, getDocotrById)
-router.put("/:id", verifyToken, editUser)
-router.delete('/:id', verifyToken, deleteUser)
+router.post('/add', createDoctor)
+router.get('/get',  getDoctors)
+router.get('/get/:id', getDocotrById)
+router.put("/:id",  editUser)
+router.delete('/:id', deleteUser)
 
 export default router

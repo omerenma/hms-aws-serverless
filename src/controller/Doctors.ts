@@ -10,9 +10,9 @@ export const createDoctor = async (req: Request, res: Response) => {
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
-    const { name, email, sex, dob, phone_no, specialty } = req.body;
-    const data = {  name, email, sex, dob, phone_no, specialty };
-     await user.addDoctor(data)
+    const { name, email, sex, dob, phone_no, specialty, business_id } = req.body;
+    const data = {  name, email, sex, dob, phone_no, specialty, business_id };
+    await user.addDoctor(data)
   
      return res.status(201).json({ message: "Doctor registered successfully"});
   } catch (error) {
