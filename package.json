@@ -29,6 +29,7 @@
     "@types/jsonwebtoken": "^9.0.1",
     "@types/morgan": "^1.9.6",
     "@types/node-fetch": "^2.6.4",
+    "@types/nodemailer": "^6.4.11",
     "@types/pg": "^8.6.6",
     "@types/winston-loggly-bulk": "^3.0.4",
     "all": "^0.0.0",

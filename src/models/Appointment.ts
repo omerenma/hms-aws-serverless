@@ -6,9 +6,21 @@ export class AppointmentModel {
         try {
                 const db_connection = await client_dev.connect()
                 const sql = 'INSERT INTO appointments (patient_id, doctor_id, appointment_date, business_id) VALUES ($1, $2, $3, $4) RETURNING * ';
+                const select_doctor = `select * from  doctors where doctors.id = ($1) `
+                const select_patient = `select * from  patients where patients.id = ($1) `
+
+
                 const result =  await db_connection.query(sql, [ user.patient_id, JSON.parse(user.doctor_id), user.appointment_date, user.business_id ])
+                const doctor_result  =  await db_connection.query(select_doctor, [JSON.parse(user.doctor_id)])
+                const patient_result  =  await db_connection.query(select_patient, [user.patient_id])
                 const response =  result
-                 return response.rows[0]
+                const doc_response = doctor_result
+                
+                 return {
+                    ...response.rows[0],
+                    ...doc_response.rows[0],
+                    ...patient_result.rows[0]
+                 }
             
         } catch (error:any) {
             throw new Error(error)
