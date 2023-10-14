@@ -26,12 +26,10 @@ export const createAppointment = async (req:Request, res:Response) => {
   try {
     await sendEmail(messageoptions)
   } catch (error:any) {
-    console.log('error from sending email', error)
     throw new Error(error)
     
   }  return res.status(201).json({ message: `An appointment has been scheduled with ${query && query.email} and ${query && query.patient_email} `, data: query });
       } catch (error:any) {
-        console.log('error', error.message)
         return res.status(500).json({ message: "Something went wrong...", error });
       }
 }
