@@ -56,6 +56,8 @@ app.use('/business', index_1.businnes);
 app.use('/enquiry', index_1.enquiry);
 app.use('/adddoctorremark', index_1.addDoctorRemark);
 app.use('/comprehend-mdeical', index_1.comprehendMedical);
+app.use('/forgot-password', index_1.forgotPassword);
+app.use('/reset-password', index_1.resetPassword);
 app.all("*", (req, res) => {
     res.status(404).send("Page Not Found");
 });

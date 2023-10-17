@@ -8,17 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TokensModel = void 0;
 const database_1 = require("../database/database");
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-const AppointmentEmail = () => __awaiter(void 0, void 0, void 0, function* () {
-    const sql = `select * from appointments where issent = 0`;
-    const query = yield database_1.client_dev.query(sql);
-    const appointments = yield query.rows;
-    for (let appointment of appointments) {
+const bcrypt = require('bcryptjs');
+class TokensModel {
+    addToken(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const db_connection = yield database_1.client_dev.connect();
+                const sql = 'INSERT INTO tokens (token) VALUES ($1) RETURNING * ';
+                const result = yield db_connection.query(sql, [token]);
+                const response = result;
+                return response.rows[0];
+            }
+            catch (error) {
+                console.log('error db token', error.message);
+                throw new Error(error.message);
+            }
+        });
     }
-});
+}
+exports.TokensModel = TokensModel;

@@ -19,7 +19,9 @@ import {
   businnes,
   enquiry,
   comprehendMedical,
-  addDoctorRemark
+  addDoctorRemark,
+  forgotPassword,
+  resetPassword
 } from "./routes/index";
 import { client, client_dev } from "./database/database";
 import deserializeUser from "./middlewares/deserializeUser"
@@ -84,6 +86,8 @@ app.use('/business', businnes)
 app.use('/enquiry', enquiry)
 app.use('/adddoctorremark', addDoctorRemark)
 app.use('/comprehend-mdeical', comprehendMedical)
+app.use('/forgot-password', forgotPassword)
+app.use('/reset-password', resetPassword)
 app.all("*", (req: express.Request, res: express.Response) => {
   res.status(404).send("Page Not Found");
 });

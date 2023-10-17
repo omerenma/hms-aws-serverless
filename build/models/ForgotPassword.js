@@ -8,17 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ForgotPasswordModel = void 0;
 const database_1 = require("../database/database");
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-const AppointmentEmail = () => __awaiter(void 0, void 0, void 0, function* () {
-    const sql = `select * from appointments where issent = 0`;
-    const query = yield database_1.client_dev.query(sql);
-    const appointments = yield query.rows;
-    for (let appointment of appointments) {
+class ForgotPasswordModel {
+    forgotPassword(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const db_connection = yield database_1.client_dev.connect();
+                const checkEmail = "SELECT * FROM users WHERE email=($1)";
+                const query_email = yield db_connection.query(checkEmail, [user]);
+                if (!query_email.rows) {
+                    throw new Error(`User  not found for this email.`);
+                }
+                else {
+                    return query_email.rows[0];
+                }
+            }
+            catch (error) {
+                throw new Error(error.message);
+            }
+        });
     }
-});
+}
+exports.ForgotPasswordModel = ForgotPasswordModel;

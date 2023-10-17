@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addDoctorRemark = exports.comprehendMedical = exports.enquiry = exports.businnes = exports.bookAppointment = exports.doctorRoute = exports.admission = exports.patientRoute = exports.diagnosisRoute = exports.appointmentRoute = exports.userRoute = exports.paystack = void 0;
+exports.resetPassword = exports.forgotPassword = exports.addDoctorRemark = exports.comprehendMedical = exports.enquiry = exports.businnes = exports.bookAppointment = exports.doctorRoute = exports.admission = exports.patientRoute = exports.diagnosisRoute = exports.appointmentRoute = exports.userRoute = exports.paystack = void 0;
 // import subscription from './subscription'
 const users_1 = __importDefault(require("./users"));
 exports.userRoute = users_1.default;
@@ -29,3 +29,7 @@ const comprehendmedical_1 = __importDefault(require("./comprehendmedical"));
 exports.comprehendMedical = comprehendmedical_1.default;
 const addDoctorRemark_1 = __importDefault(require("./addDoctorRemark"));
 exports.addDoctorRemark = addDoctorRemark_1.default;
+const forgotpassword_1 = __importDefault(require("./forgotpassword"));
+exports.forgotPassword = forgotpassword_1.default;
+const resetpassword_1 = __importDefault(require("./resetpassword"));
+exports.resetPassword = resetpassword_1.default;

@@ -16,7 +16,7 @@ interface Appointment {
 }
 
 const AppointmentEmail =async () => {
-    const sql = ` select * from appointments where issent = 0`
+    const sql = `select * from appointments where issent = 0`
     const query = await client_dev.query(sql)
     const appointments: Appointment[] = await query.rows;
     for (let appointment of appointments) {

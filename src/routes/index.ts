@@ -11,8 +11,10 @@ import businnes from './business'
 import enquiry from './enquiry'
 import comprehendMedical from './comprehendmedical'
 import addDoctorRemark from './addDoctorRemark'
+import forgotPassword from './forgotpassword'
+import resetPassword from './resetpassword'
 // import { inializeTransaction } from '../controller/PaystackApi'
 
 
 
-export {paystack,  userRoute, appointmentRoute, diagnosisRoute, patientRoute, admission, doctorRoute, bookAppointment, businnes, enquiry, comprehendMedical, addDoctorRemark}
+export {paystack,  userRoute, appointmentRoute, diagnosisRoute, patientRoute, admission, doctorRoute, bookAppointment, businnes, enquiry, comprehendMedical, addDoctorRemark, forgotPassword, resetPassword}
