@@ -16,8 +16,8 @@ class ResetPasswordModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const db_connection = yield database_1.client_dev.connect();
-                const checkToken = "SELECT * FROM tokens WHERE token=($1)";
-                const deleteToken = "DELETE FROM tokens WHERE token=($1)";
+                const checkToken = "SELECT * FROM tokens WHERE token = ($1)";
+                const deleteToken = "DELETE FROM tokens WHERE token = ($1)";
                 const query_token = yield db_connection.query(checkToken, [token]);
                 if (!query_token.rows) {
                     throw new Error(`User  not found for this email.`);
@@ -25,8 +25,8 @@ class ResetPasswordModel {
                 else {
                     // update password column-
                     // delete token from db
-                    // await db_connection.query(deleteToken, [token])
-                    return query_token.rows;
+                    yield db_connection.query(deleteToken, [token]);
+                    return query_token.rows[0];
                 }
             }
             catch (error) {
@@ -39,18 +39,20 @@ class ResetPasswordModel {
             try {
                 const db_connection = yield database_1.client_dev.connect();
                 const queryUser = `select * from users where email = ($1)`;
-                const updateUserPassword = `UPDATE users SET password = $1 where "email" = $2 RETURNING *`;
+                const updateUserPassword = `UPDATE users SET password = $1 where email = $2 RETURNING *`;
                 const query = yield db_connection.query(queryUser, [email]);
-                if (query.rows.length) {
+                if (query.rows.length > 0) {
                     const update = yield db_connection.query(updateUserPassword, [password, email]);
-                    return update;
+                    return update.rows[0];
                     // return query.rows[0]
                 }
                 else {
+                    console.log('not updated');
                     throw new Error('Password update not successful');
                 }
             }
             catch (error) {
+                console.log('error updatate dbs', error);
                 throw new Error(error.message);
             }
         });

@@ -8,12 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logout = exports.verifyRefreshToken = exports.getDoctors = exports.editUser = exports.deleteUser = exports.getUserById = exports.getUsers = exports.getSession = exports.signin = exports.signup = exports.sessions = void 0;
 const userValidation_1 = require("../helpers/userValidation");
 const Users_1 = require("../models/Users");
 const jwt_utils_1 = require("../utils/jwt.utils");
 const Logout_1 = require("../models/Logout");
+const EmailService_1 = __importDefault(require("../notifications/EmailService"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const Token_1 = require("../models/Token");
+dotenv_1.default.config();
 exports.sessions = {};
 const createSession = (email, name) => {
     // @ts-ignore
@@ -24,6 +32,7 @@ const createSession = (email, name) => {
     return session;
 };
 const user = new Users_1.UsersModel();
+const addToken = new Token_1.TokensModel();
 const logoutUser = new Logout_1.LogoutModel();
 // Add new user
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -35,9 +44,31 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { business_id, name, email, role, password } = req.body;
         const data = { business_id, name, email, role, password };
         const query = yield user.addUser(data);
-        return res
-            .status(201)
-            .json({ message: "New user registered successfully", data: query.name });
+        const token = jsonwebtoken_1.default.sign({ payload: query }, 'jsdksndjsndjnsdl', { expiresIn: '1 hr' });
+        yield addToken.addToken(token);
+        let messageoptiosn = {
+            from: process.env.EMAIL_SMTP_USER,
+            to: email,
+            subject: `Password reset`,
+            html: `
+      <html>
+      <head>
+      <title>Password verification</title>
+      <body>
+      <h1>Password Reset</h1>
+      <a href="http://localhost:3000/passwordchange/${token}">Click to reset your password</a>
+      </body>
+      </head>
+      </html>
+       `
+        };
+        try {
+            yield (0, EmailService_1.default)(messageoptiosn);
+        }
+        catch (error) {
+            throw new Error(error);
+        }
+        res.status(201).json({ message: "New user registered successfully", data: query.name });
     }
     catch (error) {
         return res.json({ message: error });

@@ -17,23 +17,18 @@ const ResetPassword_1 = require("../models/ResetPassword");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const user = new ResetPassword_1.ResetPasswordModel();
-// Add new user
 const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const password = req.body.password;
+        const id = req.body.id;
         const hash = bcryptjs_1.default.hashSync(password, 10);
-        const result = yield user.resetPassword(req.body.id);
-        let token;
+        const result = yield user.resetPassword(id);
+        let token = result && result.token;
         let email = '';
-        for (const iterator of result) {
-            token = iterator.token;
-        }
         const verifyToken = jsonwebtoken_1.default.decode(token);
         email = verifyToken.payload.email;
-        if (token && email) {
-            const update = yield user.updatePassword(hash, email);
-            res.json(update);
-        }
+        const update = yield user.updatePassword(hash, email);
+        res.json(update);
     }
     catch (error) {
         return res.json({ message: error });

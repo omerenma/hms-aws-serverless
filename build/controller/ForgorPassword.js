@@ -44,7 +44,7 @@ const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
         </body>
         </head>
         </html>
-        `
+         `
         };
         try {
             yield (0, EmailService_1.default)(messageoptiosn);

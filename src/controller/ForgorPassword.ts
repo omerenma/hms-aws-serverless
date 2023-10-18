@@ -41,8 +41,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
         </body>
         </head>
         </html>
-        `
-        
+         `
     }
     try {
         await sendMail(messageoptiosn)

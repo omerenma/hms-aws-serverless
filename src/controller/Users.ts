@@ -3,8 +3,12 @@ import { registerSchema, loginSchema } from "../helpers/userValidation";
 import { UsersModel } from "../models/Users";
 import { signJWT, verifyJWT } from "../utils/jwt.utils";
 import { LogoutModel } from "../models/Logout";
-import { logger } from "../utils/logger";
-import { formatLoggerResponse } from "../utils/FormatLoggerResponse";
+import sendMail from "../notifications/EmailService";
+import { messageoptions } from "../utils/messageoption";
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+import { TokensModel } from "../models/Token";
+dotenv.config()
 export const sessions: Record<
   string,
   { sessionId: string; email: string; valid: true }
@@ -19,10 +23,14 @@ const createSession = (email: string, name: string) => {
   return session;
 };
 const user = new UsersModel();
+const addToken = new TokensModel()
 const logoutUser = new LogoutModel()
+
+
 
 // Add new user
 export const signup = async (req: Request, res: Response) => {
+
   try {
     const { error, value } = registerSchema.validate(req.body);
     if (error) {
@@ -31,10 +39,35 @@ export const signup = async (req: Request, res: Response) => {
     const { business_id, name, email, role, password } = req.body;
     const data = { business_id, name, email, role, password };
     const query = await user.addUser(data);
-    return res
-      .status(201)
-      .json({ message: "New user registered successfully", data: query.name });
+    const token = jwt.sign({payload:query}, 'jsdksndjsndjnsdl', {expiresIn:'1 hr'})
+    await addToken.addToken(token)
+
+   
+    let messageoptiosn = {
+      from : process.env.EMAIL_SMTP_USER,
+      to:email,
+      subject: `Password reset`,
+      html: `
+      <html>
+      <head>
+      <title>Password verification</title>
+      <body>
+      <h1>Password Reset</h1>
+      <a href="http://localhost:3000/passwordchange/${token}">Click to reset your password</a>
+      </body>
+      </head>
+      </html>
+       `
+  }
+  try {
+      await sendMail(messageoptiosn)
+  } catch (error:any) {
+      throw new Error(error)
+      
+  }
+     res.status(201).json({ message: "New user registered successfully", data: query.name });
   } catch (error: any) {
+
     return res.json({ message: error });
   }
 };
